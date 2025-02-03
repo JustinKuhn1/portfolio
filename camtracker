@@ -1,0 +1,61 @@
+import cv2
+import mediapipe as mp
+
+# Initialize Mediapipe Pose
+mp_pose = mp.solutions.pose
+pose = mp_pose.Pose()
+mp_drawing = mp.solutions.drawing_utils
+
+# Capture Video (Use phone's camera stream)
+cap = cv2.VideoCapture("http://104.201.154.252:4747/video")  # Change to your phone's IP stream
+
+# Push-up Tracking Variables
+text = "online"
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Convert frame to RGB (Mediapipe requires RGB)
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+    # Process the frame to detect the pose
+    results = pose.process(rgb_frame)
+
+    if results.pose_landmarks:
+        landmarks = results.pose_landmarks.landmark
+
+        # Get key body points for push-up detection
+        shoulder_y = landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER].y
+        elbow_y = landmarks[mp_pose.PoseLandmark.LEFT_ELBOW].y
+
+        # Convert landmark positions to pixel values
+        h, w, _ = frame.shape
+        landmark_px = [(int(l.x * w), int(l.y * h)) for l in landmarks]
+
+        # Bounding box around user
+        x_min = min([x for x, y in landmark_px])
+        y_min = min([y for x, y in landmark_px])
+        x_max = max([x for x, y in landmark_px])
+        y_max = max([y for x, y in landmark_px])
+
+        # Draw pose landmarks on the frame
+        mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+
+        # Draw bounding box
+        cv2.rectangle(frame, (x_min - 20, y_min - 20), (x_max + 20, y_max + 20), (0, 255, 0), 2)
+
+    # Display text
+    cv2.putText(frame, f"status: {text}", (50, 50),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+
+    # Show the video feed
+    cv2.imshow('tracking app', frame)
+
+    # Press 'q' to exit
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
