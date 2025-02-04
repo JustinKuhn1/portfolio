@@ -1,0 +1,102 @@
+import cv2
+import mediapipe as mp
+import os
+
+# Suppress TensorFlow & Mediapipe warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+# Initialize Mediapipe Modules
+mp_pose = mp.solutions.pose
+mp_hands = mp.solutions.hands
+mp_face = mp.solutions.face_mesh
+mp_drawing = mp.solutions.drawing_utils
+
+# Facial landmarks index for key features
+MOUTH = [13, 14]  # Mouth corners
+LEFT_EYEBROW = [70, 63]  # Left eyebrow movement
+RIGHT_EYEBROW = [285, 295]  # Right eyebrow movement
+EYES = [159, 145, 386, 374]  # Eye openness
+JAW = [152]  # Jaw position
+
+# Initialize Pose, Hand, and Face Trackers
+pose = mp_pose.Pose(min_detection_confidence=0.7, min_tracking_confidence=0.7)
+hands = mp_hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.7)
+face_mesh = mp_face.FaceMesh(min_detection_confidence=0.7, min_tracking_confidence=0.7)
+
+# Open iPhone Camera Stream
+cap = cv2.VideoCapture("http://104.201.154.22:4747/video")  # Change to your IP
+
+# Ensure Camera Opens
+if not cap.isOpened():
+    print("Error: Could not open camera. Check network connection!")
+    exit()
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        print("Error: No frame captured! Exiting...")
+        break
+
+    # Convert Frame to RGB for Mediapipe
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+    # Process Frame for Pose, Hands, and Face
+    pose_results = pose.process(rgb_frame)
+    hand_results = hands.process(rgb_frame)
+    face_results = face_mesh.process(rgb_frame)
+
+    # Get Frame Dimensions
+    h, w, _ = frame.shape
+
+    # Exact Pose (Body) Tracking
+    if pose_results.pose_landmarks:
+        mp_drawing.draw_landmarks(frame, pose_results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+                                  landmark_drawing_spec=mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=2))
+
+    # Finger Tracking
+    if hand_results.multi_hand_landmarks:
+        for hand_landmarks in hand_results.multi_hand_landmarks:
+            mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS,
+                                      landmark_drawing_spec=mp_drawing.DrawingSpec(color=(255, 0, 0), thickness=2, circle_radius=2))
+
+    # Head Tracking & Facial Expression Detection
+    expression = "Neutral"  # Default expression
+    if face_results.multi_face_landmarks:
+        for face_landmarks in face_results.multi_face_landmarks:
+            mp_drawing.draw_landmarks(frame, face_landmarks, mp_face.FACEMESH_TESSELATION,
+                                      landmark_drawing_spec=mp_drawing.DrawingSpec(color=(0, 255, 255), thickness=1, circle_radius=1))
+
+            # Get key facial landmark coordinates
+            def get_landmark(index):
+                return face_landmarks.landmark[index].y  # Normalized Y-coordinate
+
+            # Calculate expression-based features
+            mouth_open = get_landmark(MOUTH[1]) - get_landmark(MOUTH[0])
+            left_brow_raise = get_landmark(LEFT_EYEBROW[0]) - get_landmark(LEFT_EYEBROW[1])
+            right_brow_raise = get_landmark(RIGHT_EYEBROW[0]) - get_landmark(RIGHT_EYEBROW[1])
+            eye_open = (get_landmark(EYES[0]) - get_landmark(EYES[1]) + get_landmark(EYES[2]) - get_landmark(EYES[3])) / 2
+            jaw_drop = get_landmark(JAW[0])
+
+            # Expression classification logic
+            if mouth_open > 0.05 and jaw_drop > 0.3:
+                expression = "Surprised"
+            elif left_brow_raise > 0.01 and right_brow_raise > 0.01:
+                expression = "Angry"
+            elif mouth_open > 0.01 and eye_open < 0.01:
+                expression = "Happy"
+            elif eye_open > 0.01:
+                expression = "Neutral"
+
+    # Display detected expression
+    cv2.putText(frame, f"Expression: {expression}", (50, 50),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
+
+    # Show Video Feed
+    cv2.imshow('body detection', frame)
+
+    # Press 'q' to Exit
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
