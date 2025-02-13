@@ -4,29 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Justin Kuhn's Portfolio</title>
-  <meta name="description" content="Portfolio of Justin Kuhn, a software engineer specializing in AI engineering and web development.">
-  <link rel="icon" href="assets/favicon.ico">
+  <meta name="description" content="Portfolio of Justin Kuhn, a software engineer specializing in AI and web development.">
   
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome for Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- CSS -->
+  <!-- Styles & Icons -->
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Preloader -->
-  <div id="preloader">
-    <div class="loader"></div>
-  </div>
-  
-  <!-- Dark Mode Toggle Button -->
-  <button id="theme-toggle" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
-  <!-- Language Toggle Button -->
-  <button id="lang-toggle" aria-label="Toggle Language">ES</button>
-  
+
   <!-- Navigation -->
   <header>
     <nav>
@@ -35,229 +22,79 @@
         <li><a href="#hero">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
-        <li><a href="#timeline">Experience</a></li>
         <li><a href="#projects">Projects</a></li>
-        <li><a href="#blog">Case Studies</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <div class="burger">
-        <div class="line1"></div>
-        <div class="line2"></div>
-        <div class="line3"></div>
-      </div>
+      <button id="theme-toggle" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
     </nav>
   </header>
-  
-  <!-- Hero Section with Moving Particles Background -->
+
+  <!-- Hero Section -->
   <section id="hero">
-    <div id="tsparticles"></div>
     <div class="hero-content">
       <h1>Hi, I'm Justin Kuhn</h1>
-      <p>I'm a <strong>software engineer</strong> specializing in <strong>AI engineering</strong> and web development.</p>
+      <p>A <strong>Software Engineer</strong> specializing in <strong>AI & Web Development</strong>.</p>
       <a href="#projects" class="btn">View My Work</a>
     </div>
   </section>
-  
-  <!-- About Section -->
+
+  <!-- About -->
   <section id="about">
     <div class="container">
       <h2>About Me</h2>
-      <div class="about-content">
-        <div class="about-text">
-          <p>Hello! I'm Justin, a passionate Software Engineer based in San Francisco, CA. I build innovative AI‑driven applications and responsive websites. When I'm not coding, I'm lifting weights, exploring new tech, or catching a football game.</p>
-          <!-- Download Resume Button -->
-          <a href="assets/resume.pdf" class="btn download-resume" download>Download Resume</a>
-        </div>
-        <div class="about-image">
-          <img src="assets/profile.jpg" alt="Photo of Justin Kuhn">
-        </div>
-      </div>
+      <p>I'm passionate about building AI-driven applications and responsive websites. When I'm not coding, I enjoy weightlifting and learning new technologies.</p>
+      <a href="assets/resume.pdf" class="btn" download>Download Resume</a>
     </div>
   </section>
-  
-  <!-- Skills Section -->
+
+  <!-- Skills -->
   <section id="skills">
     <div class="container">
       <h2>Skills</h2>
       <div class="skill">
-        <p>HTML5</p>
-        <div class="progress-bar">
-          <div class="progress" data-width="95%">95%</div>
-        </div>
-      </div>
-      <div class="skill">
-        <p>CSS3</p>
-        <div class="progress-bar">
-          <div class="progress" data-width="90%">90%</div>
-        </div>
-      </div>
-      <div class="skill">
         <p>JavaScript</p>
-        <div class="progress-bar">
-          <div class="progress" data-width="85%">85%</div>
-        </div>
+        <div class="progress-bar"><div class="progress" style="width: 90%;">90%</div></div>
       </div>
       <div class="skill">
         <p>React</p>
-        <div class="progress-bar">
-          <div class="progress" data-width="80%">80%</div>
-        </div>
-      </div>
-      <div class="skill">
-        <p>Node.js</p>
-        <div class="progress-bar">
-          <div class="progress" data-width="75%">75%</div>
-        </div>
+        <div class="progress-bar"><div class="progress" style="width: 85%;">85%</div></div>
       </div>
     </div>
   </section>
-  
-  <!-- Experience/Timeline Section -->
-  <section id="timeline">
-    <div class="container">
-      <h2>Experience</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <h3>Software Engineer at TechCorp</h3>
-          <span>Jan 2022 - Present</span>
-          <p>Developing scalable AI solutions and modern web applications.</p>
-        </div>
-        <div class="timeline-item">
-          <h3>Frontend Developer at WebWorks</h3>
-          <span>Jun 2020 - Dec 2021</span>
-          <p>Built responsive interfaces and enhanced user experiences.</p>
-        </div>
-        <div class="timeline-item">
-          <h3>Intern at CodeLabs</h3>
-          <span>Jan 2020 - May 2020</span>
-          <p>Assisted in developing internal tools and maintaining websites.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Projects Section with Filter Tabs -->
+
+  <!-- Projects -->
   <section id="projects">
     <div class="container">
       <h2>Projects</h2>
-      <!-- Filter Buttons -->
-      <div class="project-filters">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="web">Web</button>
-        <button class="filter-btn" data-filter="ai">AI</button>
-        <button class="filter-btn" data-filter="mobile">Mobile</button>
-      </div>
       <div class="project-grid">
-        <!-- Example Project Card -->
-        <div class="project-card" data-category="web" data-title="Portfolio Website" data-description="A modern, responsive portfolio site showcasing my projects and skills." data-tech="HTML, CSS, JavaScript" data-link="https://example.com/portfolio">
-          <img src="assets/project1.jpg" alt="Portfolio Website">
-          <div class="project-info">
-            <h3>Portfolio Website</h3>
-            <p>A responsive website with interactive features.</p>
-            <a href="#" class="btn view-project">View Details</a>
-          </div>
-        </div>
-        <!-- Additional project cards -->
-        <div class="project-card" data-category="ai" data-title="AI Chatbot" data-description="An intelligent chatbot powered by natural language processing." data-tech="Python, TensorFlow, NLP" data-link="https://example.com/ai-chatbot">
-          <img src="assets/project2.jpg" alt="AI Chatbot">
-          <div class="project-info">
-            <h3>AI Chatbot</h3>
-            <p>An interactive chatbot that understands user queries.</p>
-            <a href="#" class="btn view-project">View Details</a>
-          </div>
+        <div class="project-card">
+          <img src="assets/project1.jpg" alt="Project 1">
+          <h3>AI Chatbot</h3>
+          <p>An intelligent chatbot powered by NLP.</p>
+          <a href="#" class="btn">View Project</a>
         </div>
       </div>
     </div>
   </section>
-  
-  <!-- Modal for Project Details -->
-  <div id="project-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <h3 id="modal-title">Project Title</h3>
-      <p id="modal-description">Project Description</p>
-      <p id="modal-tech">Tech Stack: ...</p>
-      <a href="#" class="btn" id="modal-link">Visit Project</a>
-    </div>
-  </div>
-  
-  <!-- Testimonials Section -->
-  <section id="testimonials">
-    <div class="container">
-      <h2>Testimonials</h2>
-      <div class="testimonial-slider">
-        <div class="testimonial">
-          <p>"Justin is an exceptional developer who always delivers quality work on time."</p>
-          <h4>- Jane Doe, CEO of InnovateX</h4>
-        </div>
-        <div class="testimonial">
-          <p>"A creative problem-solver with an eye for detail. Highly recommended!"</p>
-          <h4>- John Smith, CTO of FutureTech</h4>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Blog/Case Studies Section -->
-  <section id="blog">
-    <div class="container">
-      <h2>Case Studies</h2>
-      <div class="blog-grid">
-        <article class="blog-post">
-          <img src="assets/blog1.jpg" alt="Case Study 1">
-          <h3>Improving User Engagement with AI</h3>
-          <p>A deep dive into leveraging machine learning for enhanced user interaction.</p>
-          <a href="#" class="btn">Read More</a>
-        </article>
-        <article class="blog-post">
-          <img src="assets/blog2.jpg" alt="Case Study 2">
-          <h3>Responsive Design Trends in 2025</h3>
-          <p>An analysis of modern design techniques and best practices.</p>
-          <a href="#" class="btn">Read More</a>
-        </article>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Contact Section -->
+
+  <!-- Contact -->
   <section id="contact">
     <div class="container">
       <h2>Contact Me</h2>
-      <form action="https://formspree.io/f/your-form-id" method="POST">
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" id="name" name="name" placeholder="Your Name" required>
-        </div>
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="_replyto" placeholder="Your Email" required>
-        </div>
-        <div class="form-group">
-          <label for="message">Message:</label>
-          <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
-        </div>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
         <button type="submit" class="btn">Send Message</button>
       </form>
     </div>
   </section>
-  
-  <!-- Back to Top Button -->
-  <button id="back-to-top" aria-label="Back to Top"><i class="fas fa-chevron-up"></i></button>
-  
+
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <p>&copy; 2025 Justin Kuhn. All rights reserved.</p>
-      <div class="social">
-        <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="#" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-        <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-      </div>
-    </div>
+    <p>&copy; 2025 Justin Kuhn. All rights reserved.</p>
   </footer>
-  
-  <!-- tsParticles Library -->
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.6.0/tsparticles.bundle.min.js"></script>
+
   <!-- JavaScript -->
   <script src="script.js"></script>
 </body>
