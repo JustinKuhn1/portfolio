@@ -167,9 +167,12 @@ section {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
   margin-top: 40px;
+  align-items: stretch; /* All columns have equal height */
 }
 
 .demo-card {
+  display: flex;           /* Make card a flex container */
+  flex-direction: column;  /* Stack content vertically */
   background: #fff;
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -196,7 +199,11 @@ section {
   color: var(--text-color);
   margin: 0 15px 20px;
 }
-
+/* Push the button to the bottom of the card */
+.demo-card .btn {
+  margin-top: auto;  
+  margin-bottom: 20px; /* optional spacing at bottom */
+}
 /* Contact Form */
 form {
   max-width: 600px;
