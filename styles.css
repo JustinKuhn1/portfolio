@@ -68,23 +68,6 @@ nav {
   background: var(--accent-color);
 }
 
-/* Skills */
-.skill {
-  margin-bottom: 15px;
-}
-.progress-bar {
-  background: #ddd;
-  border-radius: 20px;
-  overflow: hidden;
-}
-.progress {
-  height: 20px;
-  background: var(--primary-color);
-  color: #fff;
-  text-align: center;
-  line-height: 20px;
-}
-
 /* Footer */
 footer {
   text-align: center;
