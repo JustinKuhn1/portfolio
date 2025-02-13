@@ -1,6 +1,6 @@
 /* Global Styles */
 :root {
-  --primary-color: #007BFF;
+  --primary-color: black;
   --secondary-color: #0056b3;
   --background-color: #f8f9fa;
   --text-color: #333;
@@ -14,7 +14,7 @@ html {
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Soehne", system-ui, -apple-system, Helvetica Neue, Arial, sans-serif;
   background: var(--background-color);
   color: var(--text-color);
   margin: 0;
