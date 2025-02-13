@@ -202,7 +202,9 @@ section {
 /* Push the button to the bottom of the card */
 .demo-card .btn {
   margin-top: auto;  
-  margin-bottom: 20px; /* optional spacing at bottom */
+  margin-bottom: 20px; 
+  margin-left: 15px;
+  margin-right: 15px;/* optional spacing at bottom */
 }
 /* Contact Form */
 form {
