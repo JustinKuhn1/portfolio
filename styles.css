@@ -27,7 +27,18 @@ body {
   width: 90%;
   max-width: 1200px;
   margin: auto;
-  padding: 60px 0;
+  padding: 100px 0; /* Increased padding */
+}
+
+/* Sticky Header with Slide Up/Down */
+#main-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease;
+  z-index: 999;
 }
 
 /* Navigation */
@@ -36,11 +47,6 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
 }
 
 .logo {
@@ -80,17 +86,27 @@ nav {
   border: none;
   color: var(--text-color);
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-/* Hero Section with Advanced Animated Gradient Background */
-@keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Hamburger Animation */
+.nav-links.active {
+  animation: slideIn 0.4s forwards;
+}
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+/* Hero Section */
 #hero {
-  height: 90vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,18 +115,15 @@ nav {
   background-size: 400% 400%;
   animation: gradientAnimation 15s ease infinite;
   color: white;
+  padding: 0 10%;
 }
-
 .hero-content {
   max-width: 700px;
-  animation: fadeIn 1.5s ease-in-out;
 }
-
 .hero-content h1 {
   font-size: 3rem;
   margin-bottom: 15px;
 }
-
 .hero-content p {
   font-size: 1.3rem;
   margin-bottom: 25px;
@@ -130,130 +143,55 @@ nav {
   transition: var(--transition);
   box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
 }
-
 .btn:hover {
   background: var(--secondary-color);
   transform: translateY(-2px);
 }
 
-/* About Section */
-#about {
-  background: #fff;
-  padding: 80px 10%;
+/* Sections (About, AI Demos, Contact) */
+section {
+  padding: 100px 10%;
   text-align: center;
+  position: relative;
 }
 
-#about h2 {
-  font-size: 2.5rem;
-  color: var(--heading-color);
-  margin-bottom: 20px;
-}
-
-#about p {
-  font-size: 1.2rem;
-  color: var(--text-color);
-  max-width: 800px;
-  margin: auto;
-}
-
-/* Skills Section */
-#skills {
-  background: var(--background-color);
-  padding: 80px 10%;
-  text-align: center;
-}
-
-#skills h2 {
-  font-size: 2.5rem;
-  color: var(--heading-color);
-  margin-bottom: 40px;
-}
-
-.skill {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto 20px;
-  text-align: left;
-}
-
-.skill p {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  background: #ddd;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.progress {
-  height: 8px;
-  background: var(--primary-color);
-  border-radius: 5px;
-  transition: var(--transition);
-}
-
-/* Projects Section */
-#projects {
-  padding: 80px 10%;
-  background: #fff;
-  text-align: center;
-}
-
-.project-grid {
+/* AI Demos Grid */
+.demo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
   margin-top: 40px;
 }
 
-.project-card {
-  background: white;
+.demo-card {
+  background: #fff;
   border-radius: var(--border-radius);
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: var(--transition);
+  text-align: center;
+  padding-bottom: 20px;
 }
-
-.project-card:hover {
+.demo-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
-
-.project-card img {
+.demo-card img {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
 }
-
-.project-card h3 {
-  font-size: 1.5rem;
+.demo-card h3 {
+  font-size: 1.3rem;
   margin: 15px;
 }
-
-.project-card p {
+.demo-card p {
   font-size: 1rem;
   color: var(--text-color);
   margin: 0 15px 20px;
 }
 
-/* Contact Section */
-#contact {
-  background: var(--background-color);
-  padding: 80px 10%;
-  text-align: center;
-}
-
-#contact h2 {
-  font-size: 2.5rem;
-  color: var(--heading-color);
-  margin-bottom: 20px;
-}
-
+/* Contact Form */
 form {
   max-width: 600px;
   margin: auto;
@@ -262,7 +200,6 @@ form {
   border-radius: var(--border-radius);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 input, textarea {
   width: 100%;
   padding: 12px;
@@ -272,7 +209,6 @@ input, textarea {
   margin-bottom: 15px;
   transition: var(--transition);
 }
-
 input:focus, textarea:focus {
   border-color: var(--primary-color);
   outline: none;
@@ -280,22 +216,42 @@ input:focus, textarea:focus {
 
 /* Footer */
 footer {
-  background: #222;
+  background: linear-gradient(to right, #333, #444);
   color: #fff;
-  padding: 20px;
   text-align: center;
+  padding: 30px 10%;
+}
+.footer-content {
+  max-width: 1200px;
+  margin: auto;
+}
+.footer-content p {
+  margin: 5px 0;
+}
+.footer-content a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+.footer-content a:hover {
+  text-decoration: underline;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Fade-In Animation for Sections */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Keyframes */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Responsive Design */
@@ -303,8 +259,8 @@ footer {
   .hero-content h1 {
     font-size: 2.5rem;
   }
-  .project-grid {
-    grid-template-columns: 1fr;
+  .hamburger {
+    display: block;
   }
   .nav-links {
     flex-direction: column;
@@ -315,16 +271,12 @@ footer {
     width: 100%;
     background: #fff;
     text-align: center;
-    padding: 10px 0;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .nav-links li {
+    margin: 15px 0;
   }
   .nav-links.active {
     display: flex;
-  }
-  .nav-links li {
-    margin: 10px 0;
-  }
-  .hamburger {
-    display: block;
   }
 }
