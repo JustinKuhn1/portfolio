@@ -9,6 +9,10 @@
   --transition: all 0.3s ease-in-out;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   background: var(--background-color);
@@ -68,14 +72,32 @@ nav {
   color: #fff;
 }
 
-/* Hero Section */
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+/* Hero Section with Advanced Animated Gradient Background */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 #hero {
   height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(to right, #007BFF, #0056b3);
+  background: linear-gradient(-45deg, #007BFF, #0056b3, #009688, #00bcd4);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
   color: white;
 }
 
@@ -288,16 +310,21 @@ footer {
     flex-direction: column;
     display: none;
     position: absolute;
-    top: 60px;
+    top: 70px;
     right: 0;
     width: 100%;
     background: #fff;
     text-align: center;
+    padding: 10px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
   .nav-links.active {
     display: flex;
   }
   .nav-links li {
-    padding: 10px 0;
+    margin: 10px 0;
+  }
+  .hamburger {
+    display: block;
   }
 }
