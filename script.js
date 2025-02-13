@@ -1,3 +1,11 @@
+window.addEventListener('load', function() {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.display = 'none';
+  }
+});
+
+
 document.addEventListener("DOMContentLoaded", function() {
   // Hamburger menu toggle
   const hamburger = document.getElementById("hamburger");
