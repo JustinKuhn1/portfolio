@@ -36,18 +36,24 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // Sticky header slide up/down
-  let prevScrollPos = window.pageYOffset;
-  const header = document.getElementById('main-header');
+let prevScrollPos = window.pageYOffset;
+const header = document.getElementById('main-header');
 
-  window.addEventListener('scroll', function() {
-    const currentScrollPos = window.pageYOffset;
-    if (currentScrollPos > prevScrollPos) {
-      // Scrolling down -> slide header up
-      header.style.transform = 'translateY(-100%)';
-    } else {
-      // Scrolling up -> slide header down
-      header.style.transform = 'translateY(0)';
-    }
-    prevScrollPos = currentScrollPos;
-  });
+window.addEventListener('scroll', function() {
+  const currentScrollPos = window.pageYOffset;
+  
+  if (currentScrollPos <= 0) {
+    // If at the very top, always show the header
+    header.style.transform = 'translateY(0)';
+  } else if (currentScrollPos > prevScrollPos) {
+    // Scrolling down -> slide header up
+    header.style.transform = 'translateY(-100%)';
+  } else {
+    // Scrolling up -> slide header down
+    header.style.transform = 'translateY(0)';
+  }
+  
+  prevScrollPos = currentScrollPos;
+});
+
 });
