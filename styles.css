@@ -52,6 +52,7 @@ nav {
 .logo {
   font-size: 1.8em;
   font-weight: 600;
+  margin-left: 10px;
   color: var(--primary-color);
 }
 
@@ -146,7 +147,7 @@ nav {
   border-radius: var(--border-radius);
   text-decoration: none;
   transition: var(--transition);
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 4px 10px rgba(205, 205, 205, 0.3);
 }
 .btn:hover {
   background: var(--secondary-color);
@@ -283,5 +284,8 @@ footer {
   }
   .nav-links.active {
     display: flex;
+  }
+  nav {
+    height: 40px;
   }
 }
