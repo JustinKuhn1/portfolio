@@ -1,7 +1,7 @@
 /* Global Styles */
 :root {
   --primary-color: black;
-  --secondary-color: #0056b3;
+  --secondary-color: #7fb4ed;
   --background-color: #f8f9fa;
   --text-color: #333;
   --heading-color: #222;
@@ -116,7 +116,7 @@ nav {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(-45deg, #007BFF, #0056b3, #009688, #00bcd4);
+  background: linear-gradient(-45deg, #292a2c, #b2b5b9, #343535, #0b0b0b);
   background-size: 400% 400%;
   animation: gradientAnimation 15s ease infinite;
   color: white;
