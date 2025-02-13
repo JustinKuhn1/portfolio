@@ -89,7 +89,12 @@ nav {
   transition: transform 0.3s ease;
 }
 
-/* Hamburger Animation */
+/* Rotate animation for hamburger */
+.hamburger.rotate {
+  transform: rotate(90deg);
+}
+
+/* Hamburger Menu Animation */
 .nav-links.active {
   animation: slideIn 0.4s forwards;
 }
