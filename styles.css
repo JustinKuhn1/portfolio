@@ -314,8 +314,8 @@ input:focus, textarea:focus {
 
 /* Footer */
 footer {
-  background: linear-gradient(to right, #333, #444);
-  color: #fff;
+  background-color: white;
+  color: black;
   text-align: center;
   padding: 30px 10%;
 }
