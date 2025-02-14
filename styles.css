@@ -115,7 +115,7 @@ nav {
   position: relative;
   /* Subtract the header height so the hero fits exactly below it */
   height: calc(100vh - 80px);
-  margin-top: 80px; /* So the hero is pushed below the header */
+  margin-top: 60px; /* So the hero is pushed below the header */
   display: flex;
   align-items: center;    /* Vertically center content */
   justify-content: center; /* Horizontally center content */
@@ -161,10 +161,6 @@ nav {
   font-size: 1.3rem;
   margin-bottom: 25px;
   opacity: 0.9;
-}
-
-.fa-chevron-down:before {
-  color: white;
 }
 
 /* Buttons */
