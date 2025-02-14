@@ -381,5 +381,12 @@ footer {
     gap: 1rem;
     padding-right: 10px;
   }
+  body {
+    background-color: #000; /* black background behind the nav */
+  }
+  /* If you want sections to remain white, keep their background as is */
+  section {
+    background-color: #fff; /* or var(--background-color) */
+  }
 }
 
