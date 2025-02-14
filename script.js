@@ -32,17 +32,25 @@ faders.forEach(fader => {
   observer.observe(fader);
 });
 
-// Sticky header slide up/down
+// Fade-out / fade-in navigation on scroll
 let prevScrollPos = window.pageYOffset;
 const header = document.getElementById('main-header');
+
 window.addEventListener('scroll', function() {
   const currentScrollPos = window.pageYOffset;
+  
+  // Always show nav at the very top
   if (currentScrollPos <= 0) {
-    header.style.transform = 'translateY(0)';
-  } else if (currentScrollPos > prevScrollPos) {
-    header.style.transform = 'translateY(-100%)';
-  } else {
-    header.style.transform = 'translateY(0)';
+    header.classList.remove('hidden');
+  } 
+  // Scrolling down - fade out the header
+  else if (currentScrollPos > prevScrollPos) {
+    header.classList.add('hidden');
+  } 
+  // Scrolling up - fade the header back in
+  else {
+    header.classList.remove('hidden');
   }
+  
   prevScrollPos = currentScrollPos;
 });
