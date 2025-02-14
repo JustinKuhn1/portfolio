@@ -40,7 +40,7 @@ body {
   max-width: 1200px;
   height: 60px;
   border-radius: 30px;
-  background: #fff; /* Could use a gradient or frosted-glass effect */
+  background: #ffffffee; /* Could use a gradient or frosted-glass effect */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 9999;
   
@@ -375,9 +375,11 @@ footer {
   }
   .nav-links.active {
     display: flex;
+    border-radius: 5px;
   }
   .header-right {
     gap: 1rem;
     padding-right: 10px;
   }
 }
+
