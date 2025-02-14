@@ -113,10 +113,14 @@ nav {
 /* Hero section takes the full browser height */
 #hero {
   position: relative;
-  height: 100vh; /* Force it to fill the screen */
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
+  /* Subtract the header height so the hero fits exactly below it */
+  height: calc(100vh - 80px);
+  margin-top: 80px; /* So the hero is pushed below the header */
+  display: flex;
+  align-items: center;    /* Vertically center content */
+  justify-content: center; /* Horizontally center content */
+  text-align: center;     /* Center text if desired */
+  overflow: hidden;       /* If you have a video or large image */
 }
 
 /* Video is absolutely positioned within #hero */
@@ -157,6 +161,10 @@ nav {
   font-size: 1.3rem;
   margin-bottom: 25px;
   opacity: 0.9;
+}
+
+.fa-chevron-down:before {
+  color: white;
 }
 
 /* Buttons */
