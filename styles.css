@@ -123,6 +123,10 @@ nav {
   overflow: hidden;       /* If you have a video or large image */
 }
 
+.hero-content .btn {
+  background-color: white;
+}
+
 /* Video is absolutely positioned within #hero */
 .hero-video {
   position: absolute;
