@@ -11,7 +11,6 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: black;
 }
 
 body {
@@ -44,16 +43,15 @@ body {
   background: #fff; /* Could use a gradient or frosted-glass effect */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 9999;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-
+  
   /* Fade transition for scroll-based visibility */
   opacity: 1;
   pointer-events: auto;
   transition: opacity 0.4s ease;
+  
+  /* Flex container for header */
+  display: flex;
+  align-items: center;
 }
 
 /* Hidden state: fade out the nav */
@@ -62,32 +60,48 @@ body {
   pointer-events: none;
 }
 
-/* Navigation container inside the header */
+/* Navigation Flex Structure */
 nav {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  width: 100%; /* Ensures logo on left, links on right */
+  padding: 14px;
 }
 
-/* Logo */
+/* Header Sections: Left, Middle, Right */
+.header-left,
+.header-middle,
+.header-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Left Section: Logo */
+.header-left {
+  justify-content: flex-start;
+}
 .logo {
   font-size: 1.8em;
   font-weight: 600;
   color: var(--primary-color);
-  margin: 0; /* Adjust if you want extra spacing */
+  margin-left: 10px;
 }
 
-/* Nav Links */
+/* Middle Section: Navigation Links */
+.header-middle {
+  justify-content: center;
+}
 .nav-links {
   list-style: none;
   display: flex;
+  margin: 0;
+  padding: 0;
 }
-
 .nav-links li {
   margin-left: 20px;
 }
-
 .nav-links a {
   text-decoration: none;
   font-weight: 500;
@@ -96,10 +110,27 @@ nav {
   border-radius: var(--border-radius);
   transition: var(--transition);
 }
-
 .nav-links a:hover {
   background: var(--primary-color);
   color: #fff;
+}
+
+/* Right Section: Social Icons and Hamburger Menu */
+.header-right {
+  justify-content: flex-end;
+}
+.social-icons {
+  display: flex;
+  align-items: center;
+}
+.social-icons a {
+  color: var(--primary-color);
+  font-size: 1.4rem;
+  margin: 0 8px;
+  transition: color 0.3s ease;
+}
+.social-icons a:hover {
+  color: var(--secondary-color);
 }
 
 /* Hamburger Menu */
@@ -112,8 +143,6 @@ nav {
   cursor: pointer;
   transition: transform 0.3s ease;
 }
-
-/* Rotate animation for hamburger */
 .hamburger.rotate {
   transform: rotate(90deg);
 }
@@ -133,7 +162,7 @@ nav {
   }
 }
 
-/* Hero section takes the full browser height */
+/* Hero Section */
 #hero {
   position: relative;
   /* Subtract the header height so the hero fits exactly below it */
@@ -145,7 +174,7 @@ nav {
   overflow: hidden;       /* If you have a video or large image */
 }
 
-/* Hero Video */
+/* Hero Video & Overlay */
 .hero-video {
   position: absolute;
   top: 50%;
@@ -153,7 +182,7 @@ nav {
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
-  object-fit: cover; /* or 'contain'/'fill' as needed */
+  object-fit: cover;
   z-index: -1;
 }
 .hero-overlay {
@@ -162,9 +191,11 @@ nav {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.527); /* Adjust opacity as needed */
+  background: rgba(0, 0, 0, 0.527);
   z-index: 0;
 }
+
+/* Hero Content */
 .hero-content {
   position: relative;
   z-index: 1;
@@ -220,11 +251,11 @@ section {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
   margin-top: 40px;
-  align-items: stretch; /* All columns have equal height */
+  align-items: stretch;
 }
 .demo-card {
-  display: flex;           /* Make card a flex container */
-  flex-direction: column;  /* Stack content vertically */
+  display: flex;
+  flex-direction: column;
   background: #fff;
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -251,10 +282,9 @@ section {
   color: var(--text-color);
   margin: 0 15px 20px;
 }
-/* Push the button to the bottom of the card */
 .demo-card .btn {
-  margin-top: auto;  
-  margin-bottom: 20px; 
+  margin-top: auto;
+  margin-bottom: 20px;
   margin-left: 15px;
   margin-right: 15px;
 }
@@ -315,6 +345,12 @@ footer {
   transform: translateY(0);
 }
 
+/* Keyframes */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 /* Responsive Design */
 @media (max-width: 768px) {
   .hero-content h1 {
@@ -340,7 +376,8 @@ footer {
   .nav-links.active {
     display: flex;
   }
-  nav {
-    height: 40px;
+  .header-right {
+    gap: 1rem;
+    padding-right: 10px;
   }
 }
