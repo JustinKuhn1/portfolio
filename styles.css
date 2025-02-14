@@ -115,7 +115,6 @@ nav {
   position: relative;
   /* Subtract the header height so the hero fits exactly below it */
   height: calc(100vh - 80px);
-  margin-top: 60px; /* So the hero is pushed below the header */
   display: flex;
   align-items: center;    /* Vertically center content */
   justify-content: center; /* Horizontally center content */
@@ -125,6 +124,7 @@ nav {
 
 .hero-content .btn {
   background-color: white;
+  color: black;
 }
 
 /* Video is absolutely positioned within #hero */
@@ -144,7 +144,7 @@ nav {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* Adjust opacity as needed */
+  background: rgba(0, 0, 0, 0.527); /* Adjust opacity as needed */
   z-index: 0;
 }
 
