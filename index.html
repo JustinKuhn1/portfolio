@@ -5,60 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>KuhnAI</title>
   <meta name="description" content="Showcasing AI applications by Justin Kuhn.">
+  
+  <!-- Styles & Icons -->
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/png" href="images/weblogo.png">
+  <link rel="icon" type="image/png" href="images\weblogo.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://kit.fontawesome.com/ad44d989fa.js" crossorigin="anonymous"></script>
 </head>
 <body>
+  <!-- Preloader (optional) -->
   <div id="preloader">
     <div class="loader"></div>
   </div>
+
+  <!-- Navigation -->
   <header id="main-header">
     <nav>
-      <div class="header-left">
-        <div class="logo">
-          <img src="images/weblogo-removebg-preview.png" alt="KuhnAI" style="height:50px;vertical-align:middle;">
-        </div>
-      </div>
+      <div class="logo">
+        <a href="index.html">
+            <img src="images/weblogo-removebg-preview.png" alt="KuhnAI" 
+                 style="height: 50px; vertical-align: middle;">
+        </a>
+    </div>
       <div class="header-middle">
         <ul class="nav-links">
-          <li><a href="#hero">Home</a></li>
           <li><a href="#ai-demos">Projects</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><a href="blog.html">Updates</a></li>
+          <li><a href="blog.html">Updates</li>
         </ul>
       </div>
       <div class="header-right">
         <div class="social-icons">
           <a href="https://www.linkedin.com/in/justin-kuhn-98246a328/" target="_blank"><i class="fab fa-linkedin"></i></a>
           <a href="https://github.com/JustinKuhn1" target="_blank"><i class="fab fa-github"></i></a>
-          <a href="https://twitter.com/yourprofile" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a href="https://x.com/justinkuhnn" target="_blank"><i class="fab fa-twitter"></i></a>
         </div>
-        <button id="hamburger" class="hamburger"><i class="fas fa-bars"></i></button>
+        
+        <button id="hamburger" class="hamburger">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
     </nav>
   </header>
-  <section id="hero" class="fade-in-section">
-    <video autoplay muted loop playsinline class="hero-video">
-      <source src="videos/mainbackvide.mp4" type="video/mp4">
-      Your browser does not support the video tag
-    </video>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <h1>KuhnAI</h1>
-      <p>Discover cutting-edge AI demos and explore innovative applications.</p>
-      <a href="#ai-demos" class="btn">See what's new</a>
-    </div>
-  </section>
+  
+
+  <!-- Hero Section with Video Background -->
+<section id="hero" class="fade-in-section">
+  <!-- Video Background -->
+  <video autoplay muted loop playsinline class="hero-video">
+    <source src="videos\mainbackvide.mp4" type="video/mp4">
+    Your browser does not support the video tag
+  </video>
+  
+  <!-- Optional overlay for contrast -->
+  <div class="hero-overlay"></div>
+  
+  <!-- Hero Content -->
+  <div class="hero-content">
+    <h1>KuhnAI</h1>
+    <p>Discover cutting-edge AI demos and explore innovative applications.</p>
+    <a href="#ai-demos" class="btn">See what's new</a>
+  </div>
+</section>
+
+  <!-- AI Demos Section -->
   <section id="ai-demos" class="fade-in-section">
     <div class="container">
       <h2>AI Demos</h2>
       <div class="demo-grid">
         <div class="demo-card">
-          <img src="images/imageplaceholder.png" alt="Demo 1">
+          <img src="images\imageplaceholder.png" alt="Demo 1">
           <h3>AI Chatbot</h3>
           <p>An intelligent NLP-based chatbot for real-time Q&A.</p>
           <a href="#" class="btn">Try It</a>
@@ -78,13 +96,21 @@
       </div>
     </div>
   </section>
+  
+  <!-- About Section -->
   <section id="about" class="fade-in-section">
     <div class="container">
       <h2>About Me</h2>
-      <p>I'm passionate about building AI-driven applications. This site showcases my work and serves as a frontend for various AI projects I'm developing. Any work on this website so far are simply placeholders.</p>
+      <p>
+        I'm passionate about building AI-driven applications.
+        This site showcases my work and serves as a frontend for various AI projects I'm developing.
+        Any work on this website so far are simply placeholders.
+      </p>
       <a href="assets/resume.pdf" class="btn" download>Download Resume</a>
     </div>
   </section>
+
+  <!-- Contact Section -->
   <section id="contact" class="fade-in-section">
     <div class="container">
       <h2>Contact Me</h2>
@@ -96,12 +122,17 @@
       </form>
     </div>
   </section>
+<!-- Back to Top Button -->
+<button id="back-to-top" aria-label="Back to Top"><i class="fas fa-chevron-up"></i></button>
+  <!-- Footer -->
   <footer>
     <div class="footer-content">
       <p>© 2025 KuhnAI</p>
       <p>Follow me on <a href="#" target="_blank">LinkedIn</a> | <a href="#" target="_blank">GitHub</a></p>
     </div>
   </footer>
+
+  <!-- JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>

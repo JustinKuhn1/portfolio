@@ -63,3 +63,21 @@ section h2::after{content:"";display:block;width:60px;height:3px;background:#c2c
   body{background-color:#000;}
   section{background-color:#fff;}
 }
+/* Back to Top Button */
+#back-to-top {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 20px 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  z-index: 1001;
+  transition: background 0.3s ease;
+}
+#back-to-top:hover {
+  background: rgb(59, 59, 59);
+}
