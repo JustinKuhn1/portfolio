@@ -127,6 +127,20 @@ body {
 
   /* Navigation for mobile devices */
   @media screen and (max-width: 880px) {
+	/* Hide the video background on mobile */
+	.video-bg {
+		display: none;
+	  }
+	  
+	  /* Apply a gradient background to the hero section */
+	  #hero {
+		background: linear-gradient(135deg, #000000, #333333);
+	  }
+	  
+	  /* Optionally, hide the dark overlay if it's no longer needed */
+	  .overlay {
+		display: none;
+	  }
 	.nav {
 		justify-content: space-between;
 		padding: 25px;
