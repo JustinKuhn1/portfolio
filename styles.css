@@ -119,15 +119,19 @@ body {
 	cursor: pointer;
   }
   
+  @media (max-width: 768px) {
+	html, body {
+	  background-color: #000;
+	}
+  }
+
   /* Navigation for mobile devices */
   @media screen and (max-width: 880px) {
 	.nav {
 		justify-content: space-between;
 		padding: 25px;
 	  }
-	  body {
-		background-color: black;
-	  }
+	  
 	.nav__menu {
 	  position: fixed;
 	  left: -100%;
@@ -321,6 +325,7 @@ body {
 	height: 100%;
 	object-fit: cover;
 	z-index: -2; /* Behind content */
+	pointer-events: none;
   }
   
   /* Dark overlay */
