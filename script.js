@@ -6,14 +6,6 @@ window.addEventListener('load', function() {
   }
 });
 
-// Hamburger menu toggle
-const hamburger = document.getElementById("hamburger");
-const navLinks = document.querySelector(".nav-links");
-hamburger.addEventListener("click", function() {
-  navLinks.classList.toggle("active");
-  hamburger.classList.toggle("rotate");
-});
-
 // Fade-in on scroll using Intersection Observer with rootMargin adjustment
 const faders = document.querySelectorAll('.fade-in-section');
 const observerOptions = {
