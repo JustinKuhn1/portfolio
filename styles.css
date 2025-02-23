@@ -125,6 +125,9 @@ body {
 		justify-content: space-between;
 		padding: 25px;
 	  }
+	  body {
+		background-color: black;
+	  }
 	.nav__menu {
 	  position: fixed;
 	  left: -100%;
