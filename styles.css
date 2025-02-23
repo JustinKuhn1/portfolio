@@ -297,7 +297,7 @@ body {
   }
 
   /* Hero Section */
-#hero {
+  #hero {
 	height: 100vh;
 	display: flex;
 	align-items: center;
@@ -305,32 +305,31 @@ body {
 	color: #fff;
 	text-align: center;
 	padding: 0 20px;
-
-	position: relative; /* Ensures child elements are positioned relative to this */
-    width: 100%;
-    text-align: center;
-    overflow: hidden; /* Ensures the video does not overflow */
+	position: relative; /* Contains absolute children */
+	width: 100%;
+	overflow: hidden; /* Prevents video overflow */
   }
   
   .video-bg {
-	position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures the video covers the entire screen */
-            z-index: -2; /* Places it behind everything */
-}
-/* Dark overlay */
-.overlay {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.5); /* Adjust the opacity to control darkness */
-	z-index: -1; /* Keeps it behind the content */
-}
+	object-fit: cover;
+	z-index: -2; /* Behind content */
+  }
+  
+  /* Dark overlay */
+  .overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5); /* Adjust darkness as needed */
+	z-index: -1; /* Behind content */
+  }
   .hero-content h1 {
 	font-size: 3rem;
 	margin-bottom: 20px;
