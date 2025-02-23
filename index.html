@@ -12,12 +12,113 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://kit.fontawesome.com/ad44d989fa.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
 </head>
 <body>
+
   <!-- Preloader (optional) -->
   <div id="preloader">
     <div class="loader"></div>
   </div>
+
+ <!--==================== HEADER ====================-->
+ <header class="header" id="header">
+  <nav class="nav container">
+    <div class="logo">
+      <a href="index.html">
+          <img src="images/weblogo-removebg-preview.png" alt="KuhnAI" 
+               style="height: 50px; vertical-align: middle;">
+      </a>
+    </div>
+
+     <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+           <li class="nav__item">
+              <a href="#" class="nav__link">
+                 <i class="ri-arrow-right-up-line"></i>
+                 <span>Home</span>
+              </a>
+           </li>
+
+           <li class="nav__item">
+              <a href="#about" class="nav__link">
+                 <i class="ri-arrow-right-up-line"></i>
+                 <span>About Us</span>
+              </a>
+           </li>
+
+           <li class="nav__item">
+              <a href="#ai-demos" class="nav__link">
+                 <i class="ri-arrow-right-up-line"></i>
+                 <span>Demos</span>
+              </a>
+           </li>
+
+           <li class="nav__item">
+              <a href="blog.html" class="nav__link">
+                 <i class="ri-arrow-right-up-line"></i>
+                 <span>Blog</span>
+              </a>
+           </li>
+
+           <li class="nav__item">
+              <a href="#contact" class="nav__link">
+                 <i class="ri-arrow-right-up-line"></i>
+                 <span>Contact</span>
+              </a>
+           </li>
+        </ul>
+
+        <!-- Close button -->
+        <div class="nav__close" id="nav-close">
+           <i class="ri-close-large-line"></i>
+        </div>
+
+        <div class="nav__social">
+           <a href="https://www.instagram.com/justinkuhnn" target="_blank" class="nav__social-link">
+              <i class="ri-instagram-line"></i>
+           </a>
+           <a href="https://x.com/justinkuhnn" target="_blank" class="nav__social-link">
+            <i class="ri-twitter-line"></i>
+          </a>
+           <a href="https://github.com/JustinKuhn1" target="_blank" class="nav__social-link">
+              <i class="ri-github-line"></i>
+           </a>
+
+           <a href="https://www.linkedin.com/in/justin-kuhn-98246a328/" target="_blank" class="nav__social-link">
+              <i class="ri-linkedin-box-line"></i>
+           </a>
+        </div>
+     </div>
+
+     <!-- Toggle button -->
+     <div class="nav__toggle" id="nav-toggle">
+        <i class="ri-menu-line"></i>
+     </div>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section id="hero">
+
+  <div class="hero-content">
+ <!-- Background Video -->
+ <video class="video-bg" autoplay muted loop>
+  <source src="videos\mainbackvide.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<!-- Dark overlay -->
+<div class="overlay"></div>
+    <h1>KuhnAI</h1>
+
+    <p>Discover cutting-edge AI demos and explore innovative applications.</p>
+
+    <a href="#ai-demos" class="btn">See what's new</a>
+
+  </div>
+
+</section>
+</section>
 
   <!-- AI Demos Section -->
   <section id="ai-demos" class="fade-in-section">

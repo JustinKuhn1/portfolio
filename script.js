@@ -6,6 +6,25 @@ window.addEventListener('load', function() {
   }
 });
 
+/*=============== SHOW MENU ===============*/
+const navMenu = document.getElementById('nav-menu'),
+      navToggle = document.getElementById('nav-toggle'),
+      navClose = document.getElementById('nav-close')
+
+/* Menu show */
+if(navToggle){
+   navToggle.addEventListener('click', () =>{
+      navMenu.classList.add('show-menu')
+   })
+}
+
+/* Menu hidden */
+if(navClose){
+   navClose.addEventListener('click', () =>{
+      navMenu.classList.remove('show-menu')
+   })
+}
+
 // Fade-in on scroll using Intersection Observer with rootMargin adjustment
 const faders = document.querySelectorAll('.fade-in-section');
 const observerOptions = {
@@ -24,28 +43,32 @@ faders.forEach(fader => {
   observer.observe(fader);
 });
 
-// Fade-out / fade-in navigation on scroll
-let prevScrollPos = window.pageYOffset;
-const header = document.getElementById('main-header');
+document.addEventListener("DOMContentLoaded", function () {
+  let lastScrollTop = 0;
+  const navbar = document.querySelector(".header");
 
-window.addEventListener('scroll', function() {
-  const currentScrollPos = window.pageYOffset;
-  
-  // Always show nav at the very top
-  if (currentScrollPos <= 0) {
-    header.classList.remove('hidden');
-  } 
-  // Scrolling down - fade out the header
-  else if (currentScrollPos > prevScrollPos) {
-    header.classList.add('hidden');
-  } 
-  // Scrolling up - fade the header back in
-  else {
-    header.classList.remove('hidden');
-  }
-  
-  prevScrollPos = currentScrollPos;
+  window.addEventListener("scroll", function () {
+      let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+      let scrollHeight = document.documentElement.scrollHeight;
+      let windowHeight = window.innerHeight;
+
+      if (currentScroll <= 0 || currentScroll + windowHeight >= scrollHeight) {
+          // Show navbar when at the top or bottom
+          navbar.style.transition = "top 0.3s ease-in-out, opacity 0.3s ease-in-out";
+          navbar.style.opacity = "1";
+      } else if (currentScroll > lastScrollTop) {
+          // Scrolling down, hide the navbar
+          navbar.style.opacity = "0";
+      } else {
+          // Scrolling up, show the navbar
+          navbar.style.opacity = "1";
+      }
+
+      lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+  });
 });
+
+
 // Back to Top Button
 const backToTop = document.getElementById('back-to-top');
 window.addEventListener('scroll', () => {
