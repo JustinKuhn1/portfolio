@@ -157,6 +157,10 @@
 	  justify-content: space-between;
 	  padding: 25px;
 	}
+
+	#footer {
+		padding-bottom: 5px;
+	}
 	
 	.nav__menu {
 	  position: fixed;
