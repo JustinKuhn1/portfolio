@@ -24,7 +24,6 @@ if(navClose){
       navMenu.classList.remove('show-menu')
    })
 }
-
 // Fade-in on scroll using Intersection Observer with rootMargin adjustment
 const faders = document.querySelectorAll('.fade-in-section');
 const observerOptions = {

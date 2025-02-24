@@ -98,6 +98,15 @@
 	cursor: pointer;
   }
   
+  #particles-js {
+    display: none; /* Hide by default */
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background: black; /* Background color */
+    z-index: -1;
+}
+
   /*==================== MOBILE GLOBAL STYLES ====================*/
   @media (max-width: 768px) {
 	html,
@@ -112,17 +121,38 @@
 	.video-bg {
 	  display: none;
 	}
-	
-	/* Apply gradient background to hero */
 	#hero {
-	  background: linear-gradient(135deg, #000000, #333333);
-	}
-	
-	/* Hide dark overlay if not needed */
-	.overlay {
-	  display: none;
-	}
-	
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        padding: 0 20px;
+        background: transparent !important; /* Removes gray background */
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    #particles-js {
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: black; /* Ensures a black background */
+        z-index: -1; /* Sends particles behind content */
+    }
+
+    .video-bg {
+        display: none; /* Hide video on mobile */
+    }
+    
+    .overlay {
+        display: none; /* Hide overlay if it's darkening the background */
+    }
 	.nav {
 	  justify-content: space-between;
 	  padding: 25px;
@@ -376,6 +406,31 @@
   #about .btn {
 	margin-top: 10px;
   }
+  
+  .resources-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 30px;
+	margin-top: 40px;
+  }
+  
+  .resource-card {
+	background: #fff;
+	border-radius: var(--border-radius);
+	padding: 20px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	text-align: center;
+  }
+  
+  .resource-card h3 {
+	margin-bottom: 10px;
+  }
+  
+  .resource-card p {
+	margin-bottom: 20px;
+	font-size: 0.9rem;
+  }
+
   
   /*==================== DEMO CARDS ====================*/
   .demo-grid {

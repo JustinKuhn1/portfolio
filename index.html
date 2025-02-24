@@ -65,6 +65,7 @@
           </li>
         </ul>
 
+        
         <!-- Close button -->
         <div class="nav__close" id="nav-close">
           <i class="ri-close-large-line"></i>
@@ -101,12 +102,71 @@
         <source src="videos/mainbackvide.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
+
       <!-- Dark overlay -->
       <div class="overlay"></div>
+
+      <div id="particles-js"></div>
+      <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Check if the screen width is 880px or smaller
+    if (window.matchMedia("(max-width: 880px)").matches) {
+        particlesJS("particles-js", {
+            particles: {
+                number: {
+                    value: 100,
+                    density: { enable: true, value_area: 800 }
+                },
+                color: { value: "#00ffff" },
+                shape: { type: "circle" },
+                opacity: {
+                    value: 0.5,
+                    random: true
+                },
+                size: {
+                    value: 3,
+                    random: true
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out"
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00ffff",
+                    opacity: 0.5,
+                    width: 1
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                },
+                modes: {
+                    repulse: { distance: 100 },
+                    push: { particles_nb: 4 }
+                }
+            }
+        });
+    }
+});
+</script>
+
+        
       <h1>KuhnAI</h1>
       <p>Discover cutting-edge AI demos and explore innovative applications.</p>
       <a href="#ai-demos" class="btn">See what's new</a>
     </div>
+
   </section>
 
   <!-- AI Demos Section -->
@@ -131,6 +191,31 @@
           <h3>Voice Assistant</h3>
           <p>A voice-activated assistant built with speech recognition.</p>
           <a href="#" class="btn">Try It</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources Section -->
+  <section id="resources" class="fade-in-section">
+    <div class="container">
+      <h2>Resources</h2>
+      <p>Explore our curated list of AI resources, tutorials, research papers, and tools.</p>
+      <div class="resources-grid">
+        <div class="resource-card">
+          <h3>Online Courses</h3>
+          <p>Learn AI through comprehensive courses on platforms like Coursera and Udacity.</p>
+          <a href="https://www.coursera.org" target="_blank" class="btn">Explore</a>
+        </div>
+        <div class="resource-card">
+          <h3>Research Papers</h3>
+          <p>Access cutting-edge research papers and articles in the field of AI.</p>
+          <a href="https://arxiv.org" target="_blank" class="btn">Discover</a>
+        </div>
+        <div class="resource-card">
+          <h3>Tutorials</h3>
+          <p>Step-by-step guides to build your own AI projects.</p>
+          <a href="https://www.tensorflow.org/tutorials" target="_blank" class="btn">Learn More</a>
         </div>
       </div>
     </div>
