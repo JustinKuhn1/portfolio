@@ -1,0 +1,137 @@
+/*==================== VARIABLES ====================*/
+:root {
+	/* Primary Colors and Typography */
+	--primary-color: black;
+	--secondary-color: #0f1318;
+	--background-color: #f8f9fa;
+	--text-color: #333;
+	--heading-color: #222;
+	--border-radius: 8px;
+	--transition: all 0.3s ease-in-out;
+	--font-family: "Soehne", system-ui, -apple-system, Helvetica Neue, Arial, sans-serif;
+  
+	/* Additional Variables */
+	--header-height: 3.5rem;
+	--white-color: hsl(0, 0%, 0%);
+	--black-color: hsl(0, 0%, 100%);
+	--menu-font: "Soehne", system-ui, -apple-system, Helvetica Neue, Arial, sans-serif;
+	--h1-font-size: 1.5rem;
+	--normal-font-size: .938rem;
+	--font-regular: 400;
+	--font-medium: 500;
+	--z-tooltip: 10;
+	--z-fixed: 100;
+  }
+
+#hero-chat {
+    height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	text-align: center;
+	padding: 0 20px;
+	position: relative; /* Contains absolute children */
+	width: 100%;
+	overflow: hidden; /* Prevents video overflow */
+    background: linear-gradient(270deg, #000, #222, #000);
+  background-size: 600% 600%;
+  animation: movingGradient 10s ease infinite;
+}
+@media screen and (max-width: 880px) {
+#hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 0 20px;
+    background: transparent !important; /* Removes gray background */
+    overflow: hidden;
+    z-index: 1;
+}
+}
+@keyframes movingGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+.btnhero {
+	display: inline-block;
+	background: white;
+	color: black;
+	padding: 12px 24px;
+	font-size: 1rem;
+	font-weight: 500;
+	border-radius: var(--border-radius);
+	text-decoration: none;
+	transition: var(--transition);
+	box-shadow: 0 4px 10px rgba(205, 205, 205, 0.3);
+  }
+  /* Chat Section */
+#chat-section {
+    padding: 20px;
+    background: #f7f7f8;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .chat-container {
+    width: 100%;
+    max-width: 80%;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .chat-box {
+    flex: 1;
+    min-height: 300px;
+    padding: 16px;
+    overflow-y: auto;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  
+  .chat-input-container {
+    display: flex;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  #chat-input {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    outline: none;
+    border-radius: 0 0 0 8px;
+  }
+  
+  #chat-send {
+    border: none;
+    padding: 12px 16px;
+    background: #90adcc;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 0 0 8px 0;
+    transition: background 0.3s ease;
+  }
+  
+  #chat-send:hover {
+    background: #98aabd;
+  }
+  

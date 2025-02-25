@@ -398,6 +398,22 @@
 	transform: translateY(-2px);
   }
   
+  .btnsoon {
+	display: inline-block;
+	background: rgb(158, 158, 158);
+	color: #000000;
+	padding: 12px 24px;
+	font-size: 1rem;
+	font-weight: 500;
+	border-radius: var(--border-radius);
+	text-decoration: none;
+	transition: var(--transition);
+	box-shadow: 0 4px 10px rgba(205, 205, 205, 0.3);
+}
+.demo-card .btnsoon {
+    margin: auto 15px 20px;
+}
+
   /*==================== SECTIONS ====================*/
   section {
 	padding: 100px 10%;
