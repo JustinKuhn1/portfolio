@@ -121,6 +121,9 @@
 	.video-bg {
 	  display: none;
 	}
+	.footer {
+		padding-bottom: 5px !important;
+	}
 	#hero {
         position: relative;
         width: 100%;
@@ -156,10 +159,6 @@
 	.nav {
 	  justify-content: space-between;
 	  padding: 25px;
-	}
-
-	#footer {
-		padding-bottom: 5px;
 	}
 	
 	.nav__menu {
@@ -552,7 +551,7 @@
 .footer-column {
     flex: 1;
     min-width: 250px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .footer-column h3 {
@@ -626,7 +625,7 @@
     }
 
     .footer-column {
-        margin-bottom: 30px;
+        margin-bottom: 40px;
     }
 }
 
