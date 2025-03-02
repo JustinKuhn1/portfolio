@@ -95,21 +95,45 @@
   <!-- Hero Section -->
   <section id="hero-chat">
     <div class="hero-content">
-      <h1>KuhnAI Chat</h1>
+      <h1>KuhnNova o1</h1>
       <p>Try out our newest chat model.</p>
-      <a href="#ai-demos" class="btnhero">Explore Now</a>
+      <a href="#chat-section" class="btnhero">Explore Now</a>
     </div>
 </section>
 
 <section id="chat-section">
-    <div class="chat-container">
-      <div id="chat-box" class="chat-box"></div>
-      <div class="chat-input-container">
-        <input type="text" id="chat-input" placeholder="Send a message..." />
-        <button id="chat-send">Send</button>
-      </div>
-    </div>
-  </section>
+   <div class="chat-container">
+     <div class="chat-header">
+       <h2>KuhnNova o1</h2>
+       <span class="status">Updating...</span>
+     </div>
+     <div id="chat-box" class="chat-box">
+       <div class="message welcome-message">
+         <p>Hello! I'm KuhnAI. How can I assist you today?</p>
+       </div>
+     </div>
+     <div class="typing-indicator" id="typing-indicator" style="display: none;">
+       <span></span><span></span><span></span>
+     </div>
+     <div class="chat-input-container">
+       <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off" />
+       <div class="chat-buttons">
+         <button id="deepsearch-btn" aria-label="Deepsearch" title="Perform a deep search">
+           <i class="fas fa-search-plus"></i> DeepSearch
+         </button>
+         <button id="think-btn" aria-label="Think" title="Think deeply">
+           <i class="fas fa-brain"></i> Think
+         </button>
+         <button id="attach-btn" aria-label="Attach" title="Attach a file">
+           <i class="fas fa-paperclip"></i>
+         </button>
+         <button id="chat-send" aria-label="Send Message" title="Send">
+           <i class="fas fa-paper-plane"></i>
+         </button>
+       </div>
+     </div>
+   </div>
+ </section>
   
 <!-- Back to Top Button -->
 <button id="back-to-top" aria-label="Back to Top"><i class="fas fa-chevron-up"></i></button>
