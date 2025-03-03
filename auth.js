@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const forgotPasswordLink = document.getElementById('forgot-password');
     const backToLoginBtn = document.querySelector('.auth-back-btn');
     const googleBtns = document.querySelectorAll('.auth-google-btn');
-    
+    const welcomeMessageElement = document.querySelector(".welcome-message p"); // Add this line to get welcome message
+
     // Authentication state observer
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -28,13 +29,27 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
+    // Add Firebase auth state listener to update welcome message
+  if (firebase.auth) {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user && welcomeMessageElement) {
+        // User is signed in, personalize the welcome message
+        const displayName = user.displayName || user.email.split('@')[0] || "there";
+        welcomeMessageElement.textContent = `Hello, ${displayName}! I'm KuhnAI. How can I assist you today?`;
+      } else if (welcomeMessageElement) {
+        // User is not signed in, use default message
+        welcomeMessageElement.textContent = "Hello! I'm KuhnAI. How can I assist you today?";
+      }
+    });
+  }
+  
     // Update account button based on auth state
     function updateAccountButton(isLoggedIn, user) {
       const accountBtn = document.getElementById('account-btn');
       const accountText = accountBtn.querySelector('span');
       
       if (isLoggedIn) {
-        accountText.textContent = user.displayName || 'My Account';
+        accountText.textContent = 'My Profile';
         
         // Create dropdown menu for logged in users
         let dropdownExists = document.querySelector('.account-dropdown');
