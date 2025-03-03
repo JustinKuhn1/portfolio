@@ -7,11 +7,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const thinkBtn = document.getElementById("think-btn");
   const attachBtn = document.getElementById("attach-btn");
   const typingIndicator = document.getElementById("typing-indicator");
+  const statusElement = document.querySelector(".status"); // Get status indicator
 
   // Check if all elements are found
   if (!chatBox || !chatInput || !chatSend || !deepsearchBtn || !thinkBtn || !attachBtn || !typingIndicator) {
     console.error("One or more DOM elements not found. Check your HTML IDs.");
     return;
+  }
+
+  // Listen for status changes from Firestore
+  if (db) {
+    db.collection("system").doc("status").onSnapshot((doc) => {
+      if (doc.exists) {
+        const statusData = doc.data();
+        if (statusData && statusData.message) {
+          statusElement.textContent = statusData.message;
+          
+          // Set color based on status type
+          if (statusData.type === "online") {
+            statusElement.style.color = "#28a745"; // Green
+          } else if (statusData.type === "updating") {
+            statusElement.style.color = "rgb(231, 158, 0)"; // Orange (from your CSS)
+          } else if (statusData.type === "offline") {
+            statusElement.style.color = "#dc3545"; // Red
+          }
+        }
+      } else {
+        console.log("No status document found");
+      }
+    }, (error) => {
+      console.error("Error getting status:", error);
+    });
+  } else {
+    console.error("Firebase database not initialized");
   }
 
   // Add message to chat box

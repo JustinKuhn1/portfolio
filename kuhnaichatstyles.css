@@ -102,12 +102,6 @@
     color: var(--heading-color);
   }
   
-  .status {
-    font-size: 0.9rem;
-    /*color: #28a745;*/
-    color: rgb(231, 158, 0);
-  }
-  
   .chat-box {
     padding: 20px;
     min-height: 400px; /* Taller chat area */

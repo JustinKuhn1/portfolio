@@ -13,3 +13,30 @@ firebase.initializeApp(firebaseConfig);
 // Initialize Firebase services
 const auth = firebase.auth();
 const db = firebase.firestore();
+
+// This code would typically be placed in an admin panel or management interface
+// Create a function to update the status in Firebase
+
+function updateModelStatus(statusType, statusMessage) {
+    // Reference to the status document
+    const statusRef = db.collection("system").doc("status");
+    
+    return statusRef.set({
+      type: statusType,         // "online", "updating", "offline"
+      message: statusMessage,   // Custom message to display
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+      console.log("Status updated successfully");
+      return true;
+    })
+    .catch((error) => {
+      console.error("Error updating status: ", error);
+      return false;
+    });
+  }
+  
+  // Example usage:
+  // updateModelStatus("updating", "Updating..."); 
+  // updateModelStatus("online", "Online");
+  // updateModelStatus("offline", "Maintenance");
