@@ -80,3 +80,15 @@ window.addEventListener('scroll', () => {
 backToTop.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// Close dropdowns when clicking elsewhere on the page
+document.addEventListener('click', function(event) {
+  const dropdown = document.querySelector('.account-dropdown');
+  const accountBtn = document.getElementById('account-btn');
+  
+  if (dropdown && dropdown.classList.contains('show') && 
+      !dropdown.contains(event.target) && 
+      !accountBtn.contains(event.target)) {
+    dropdown.classList.remove('show');
+  }
+});
