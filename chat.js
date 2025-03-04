@@ -41,8 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   // Vext API configuration
-  const vextApiKey = "TcW8hzf6.5mCf5B2T5zmv0ruHyXgjdpD5EwIN5bU8";
-  const vextEndpoint = "https://payload.vextapp.com/hook/PY9VXD8QLS/catch/$kuhnai";
+  const vextApiKey = import.meta.env.VITE_VEXT_API_KEY;
+  const vextEndpoint = import.meta.env.VITE_VEXT_ENDPOINT;
 
   // Add message to chat box
   function addMessage(text, className) {
