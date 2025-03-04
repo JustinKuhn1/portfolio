@@ -44,11 +44,14 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Firebase database not initialized");
   }
 
-  // Add message to chat box
+  // Add message to chat box with markdown parsing using regex
   function addMessage(text, className) {
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("message", className);
-    messageDiv.innerHTML = `<p>${text}</p>`;
+
+    // Parse markdown bold (**text**) to HTML <strong> tags using regex
+    const parsedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    messageDiv.innerHTML = `<p>${parsedText}</p>`;
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
   }
