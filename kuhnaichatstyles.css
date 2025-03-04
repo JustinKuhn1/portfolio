@@ -131,7 +131,7 @@
   }
   
   .user-message {
-    background: #90adcc;
+    background: #000000;
     color: #fff;
     align-self: flex-end;
   }
@@ -149,11 +149,11 @@
   }
   
   .typing-indicator span {
-    width: 8px;
-    height: 8px;
-    background: #90adcc;
+    width: 5px;
+    height: 5px;
+    background: #000000;
     border-radius: 50%;
-    animation: bounce 0.6s infinite alternate;
+    animation: bounce 0.3s infinite alternate;
   }
   
   .typing-indicator span:nth-child(2) {
@@ -195,7 +195,7 @@
   #chat-send {
     border: none;
     padding: 8px 12px;
-    color: #90adcc;
+    color: #000000;
     font-size: 1rem;
     cursor: pointer;
     transition: var(--transition);
@@ -217,7 +217,7 @@
   #deepsearch-btn:hover,
   #think-btn:hover {
     background: rgba(144, 173, 204, 0.1);
-    color: #6b8aa8;
+    color: #404244;
   }
   
   /* Specific styles for Attach and Send (icon-only) */
@@ -232,9 +232,11 @@
   #attach-btn:hover,
   #chat-send:hover {
     background: rgba(144, 173, 204, 0.1);
-    color: #6b8aa8;
+    color: #404244;
   }
   
+  #chat-section {padding: 15px;}
+
   /* Active and disabled states */
   #deepsearch-btn:active,
   #think-btn:active,
@@ -266,7 +268,7 @@
     background: transparent; /* No solid background */
     border: none;
     padding: 10px;
-    color: #90adcc; /* Matches your theme */
+    color: #000000; /* Matches your theme */
     font-size: 1.2rem; /* Slightly larger icon */
     cursor: pointer;
     transition: var(--transition); /* Smooth hover effect */
@@ -279,7 +281,7 @@
   }
   
   #chat-send:hover {
-    color: #6b8aa8; /* Darker shade for hover */
+    color: #404244; /* Darker shade for hover */
     background: rgba(144, 173, 204, 0.1); /* Subtle background on hover */
   }
   
