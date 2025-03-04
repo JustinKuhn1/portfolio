@@ -139,11 +139,13 @@ document.addEventListener("DOMContentLoaded", () => {
   deepsearchBtn.addEventListener("click", () => {
     console.log("Deepsearch button clicked");
     handleMessage("deepsearch");
+    addMessage("DeepSearch is only available to KuhnAI devlopers. This feature will be coming soon to Pro accounts.", "ai-message");
   });
 
   thinkBtn.addEventListener("click", () => {
     console.log("Think button clicked");
     handleMessage("think");
+    addMessage("Advanced reasoning is only available to KuhnAI devlopers. This feature will be coming soon to Pro accounts.", "ai-message");
   });
 
   attachBtn.addEventListener("click", () => {
