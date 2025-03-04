@@ -41,6 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     console.error("Firebase database not initialized");
   }
+  
+  // Vext API configuration
+  const vextApiKey = import.meta.env.VITE_VEXT_API_KEY;
+  const vextEndpoint = import.meta.env.VITE_VEXT_ENDPOINT;
 
   // Add message to chat box
   function addMessage(text, className) {
