@@ -10,15 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusElement = document.querySelector(".status"); // Get status indicator
 
   // Check if all elements are found
-  if (!chatBox || !chatInput || !chatSend || !typingIndicator) {
+  if (!chatBox || !chatInput || !chatSend || !deepsearchBtn || !thinkBtn || !attachBtn || !typingIndicator) {
     console.error("One or more DOM elements not found. Check your HTML IDs.");
     return;
   }
 
   // Listen for status changes from Firestore
-  if (typeof db !== 'undefined' && db) {
+  if (db) {
     db.collection("system").doc("status").onSnapshot((doc) => {
-      if (doc.exists && statusElement) {
+      if (doc.exists) {
         const statusData = doc.data();
         if (statusData && statusData.message) {
           statusElement.textContent = statusData.message;
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (statusData.type === "online") {
             statusElement.style.color = "#28a745"; // Green
           } else if (statusData.type === "updating") {
-            statusElement.style.color = "rgb(231, 158, 0)"; // Orange
+            statusElement.style.color = "rgb(231, 158, 0)"; // Orange (from your CSS)
           } else if (statusData.type === "offline") {
             statusElement.style.color = "#dc3545"; // Red
           }
@@ -38,11 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }, (error) => {
       console.error("Error getting status:", error);
     });
+  } else {
+    console.error("Firebase database not initialized");
   }
-  
-  // Vext API configuration
-  const vextApiKey = import.meta.env.VITE_VEXT_API_KEY;
-  const vextEndpoint = import.meta.env.VITE_VEXT_ENDPOINT;
 
   // Add message to chat box
   function addMessage(text, className) {
@@ -53,100 +51,81 @@ document.addEventListener("DOMContentLoaded", () => {
     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
   }
 
-  async function fetchAIResponse(userInput) {
-    typingIndicator.style.display = "flex";
+  async function fetchAIResponse(userInput, mode = "default") {
+    const model = AI_CONFIG.MODELS[mode] || AI_CONFIG.MODELS.default;
     
-    try {
-      const response = await fetch(vextEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Apikey": `Api-Key ${vextApiKey}`
-        },
-        body: JSON.stringify({
-          payload: userInput
-        })
-      });
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
-      }
-  
-      const data = await response.json();
-      console.log("API Response:", data); // Log the full response to see its structure
-      
-      // Try to access the response using different potential property names
-      if (data.result) return data.result;
-      if (data.payload) return data.payload;
-      if (data.response) return data.response;
-      if (data.message) return data.message;
-      if (data.text) return data.text;
-      if (data.content) return data.content;
-      
-      // If we get here, try to use the data itself if it's a string
-      if (typeof data === 'string') return data;
-      
-      // If all else fails
-      return "I couldn't generate a response. (Check console for API details)";
-    } catch (error) {
-      console.error("Vext API Error:", error);
-      return "Sorry, there was an error connecting to the AI. Please try again later.";
-    } finally {
-      typingIndicator.style.display = "none";
+    const apiUrl = `https://api-inference.huggingface.co/models/${model}`;
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${AI_CONFIG.API_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        inputs: userInput,
+        parameters: {
+          max_length: AI_CONFIG.MAX_LENGTH,
+          temperature: AI_CONFIG.TEMPERATURE,
+          top_p: 0.9,
+          return_full_text: false
+        }
+      })
+    };
+
+  try {
+    const response = await fetch(apiUrl, requestOptions);
+    const data = await response.json();
+    
+    if (response.ok) {
+      // Process response based on the model return format
+      let text = data[0]?.generated_text || "I couldn't generate a response.";
+      return text;
+    } else {
+      console.error("API error:", data);
+      return "Sorry, I encountered an error processing your request.";
     }
+  } catch (error) {
+    console.error("Error fetching from Hugging Face:", error);
+    return "Sorry, I couldn't connect to my language model right now.";
   }
+}
 
-  // Handle sending messages
-  async function handleMessage() {
-    const inputText = chatInput.value.trim();
-    if (!inputText) return;
-
-    // Add user message
-    addMessage(inputText, "user-message");
-    chatInput.value = ""; // Clear input
-    chatSend.disabled = true; // Disable send button
-
-    // Fetch and display AI response
-    const aiResponse = await fetchAIResponse(inputText);
-    addMessage(aiResponse, "ai-message");
-    
-    // Re-enable send button after message is processed
-    chatSend.disabled = false;
-  }
-
-  // Event listeners
-  chatSend.addEventListener("click", handleMessage);
-  chatInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") handleMessage();
+  // Event listeners for buttons
+  chatSend.addEventListener("click", () => {
+    console.log("Send button clicked");
+    handleMessage("default");
   });
+
+  deepsearchBtn.addEventListener("click", () => {
+    console.log("Deepsearch button clicked");
+    handleMessage("deepsearch");
+  });
+
+  thinkBtn.addEventListener("click", () => {
+    console.log("Think button clicked");
+    handleMessage("think");
+  });
+
+  attachBtn.addEventListener("click", () => {
+    console.log("Attach button clicked");
+    addMessage("Attach feature coming soon!", "ai-message");
+  });
+
+  // Input handling
+  chatInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      console.log("Enter key pressed");
+      handleMessage("default");
+    }
+  });
+
   chatInput.addEventListener("input", () => {
     chatSend.disabled = !chatInput.value.trim();
   });
 
-  // Initialize optional buttons if they exist
-  if (deepsearchBtn) {
-    deepsearchBtn.addEventListener("click", () => {
-      // Implement deepsearch functionality
-      console.log("Deepsearch clicked");
-    });
-  }
-  
-  if (thinkBtn) {
-    thinkBtn.addEventListener("click", () => {
-      // Implement thinking functionality
-      console.log("Think clicked");
-    });
-  }
-  
-  if (attachBtn) {
-    attachBtn.addEventListener("click", () => {
-      // Implement attachment functionality
-      console.log("Attach clicked");
-    });
-  }
-
   // Initial setup
   chatSend.disabled = true;
-  console.log("Chat script initialized successfully with Vext API");
+  console.log("Chat script initialized successfully");
 });
+
+
