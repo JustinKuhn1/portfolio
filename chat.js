@@ -51,43 +51,44 @@ document.addEventListener("DOMContentLoaded", () => {
     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
   }
 
-  // Simulated AI response (replace with real API later)
   async function fetchAIResponse(userInput, mode = "default") {
-    return new Promise((resolve) => {
-      let response = `You said: "${userInput}". `;
-      if (mode === "deepsearch") response += "Performing a deep search...";
-      else if (mode === "think") response += "Thinking deeply...";
-      else response += "How can I help you further?";
-      setTimeout(() => resolve(response), 1000); // Simulated delay
-    });
-  }
-
-  // Handle sending message (shared logic for send/deepsearch/think)
-  function handleMessage(mode = "default") {
-    const messageText = chatInput.value.trim();
-    if (!messageText) {
-      console.log("Input is empty, ignoring.");
-      return;
-    }
-
-    addMessage(messageText, "user-message");
-    chatInput.value = "";
-    chatSend.disabled = true;
-    typingIndicator.style.display = "flex";
-
-    fetchAIResponse(messageText, mode)
-      .then((response) => {
-        addMessage(response, "ai-message");
-        typingIndicator.style.display = "none";
-        chatSend.disabled = !chatInput.value.trim();
+    const model = AI_CONFIG.MODELS[mode] || AI_CONFIG.MODELS.default;
+    
+    const apiUrl = `https://api-inference.huggingface.co/models/${model}`;
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${AI_CONFIG.API_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        inputs: userInput,
+        parameters: {
+          max_length: AI_CONFIG.MAX_LENGTH,
+          temperature: AI_CONFIG.TEMPERATURE,
+          top_p: 0.9,
+          return_full_text: false
+        }
       })
-      .catch((error) => {
-        console.error("Error fetching response:", error);
-        addMessage("Oops, something went wrong!", "ai-message");
-        typingIndicator.style.display = "none";
-        chatSend.disabled = !chatInput.value.trim();
-      });
+    };
+
+  try {
+    const response = await fetch(apiUrl, requestOptions);
+    const data = await response.json();
+    
+    if (response.ok) {
+      // Process response based on the model return format
+      let text = data[0]?.generated_text || "I couldn't generate a response.";
+      return text;
+    } else {
+      console.error("API error:", data);
+      return "Sorry, I encountered an error processing your request.";
+    }
+  } catch (error) {
+    console.error("Error fetching from Hugging Face:", error);
+    return "Sorry, I couldn't connect to my language model right now.";
   }
+}
 
   // Event listeners for buttons
   chatSend.addEventListener("click", () => {
@@ -126,3 +127,5 @@ document.addEventListener("DOMContentLoaded", () => {
   chatSend.disabled = true;
   console.log("Chat script initialized successfully");
 });
+
+
