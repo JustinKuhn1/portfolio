@@ -1,5 +1,3 @@
-import marked from 'marked';
-
 document.addEventListener("DOMContentLoaded", () => {
   // DOM elements
   const chatBox = document.getElementById("chat-box");
@@ -46,10 +44,11 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Firebase database not initialized");
   }
 
+  // Add message to chat box
   function addMessage(text, className) {
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("message", className);
-    messageDiv.innerHTML = `<p>${marked.parse(text)}</p>`; // Parse markdown to HTML
+    messageDiv.innerHTML = `<p>${text}</p>`;
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
   }
