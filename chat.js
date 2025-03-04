@@ -57,8 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
   async function fetchAIResponse(userInput, mode = "default") {
     typingIndicator.style.display = "flex"; // Show typing indicator
     try {
-      console.log("Sending to Worker:", userInput, "Mode:", mode, "From Origin:", window.location.origin, "Worker URL:", 'https://kuhnauthapi.kuhnj8313.workers.dev/');
-      const response = await fetch('https://kuhnauthapi.kuhnj8313.workers.dev/', { // Use the Worker’s default URL
+      console.log("Sending to Worker:", userInput, "Mode:", mode, "From Origin:", window.location.origin, "Worker URL:", 'https://kuhnauthapi.kuhnj8313.workers.dev/chat');
+      const response = await fetch('https://kuhnauthapi.kuhnj8313.workers.dev/chat', { // Use the Worker’s default URL
         method: "POST",
         headers: {
           "Content-Type": "application/json",
