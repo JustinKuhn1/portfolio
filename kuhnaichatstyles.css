@@ -112,35 +112,41 @@
     gap: 12px;
   }
   
-  .message {
-    max-width: 70%;
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 1rem;
-    line-height: 1.5;
+  /* Ensure the message starts with opacity 0 (invisible) and transitions to 1 (visible) */
+.message {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+/* Define the fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px); /* Optional: Slight upward movement for effect */
   }
-  
-  .message p {
-    margin: 0;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .welcome-message {
-    background: #e9ecef;
-    align-self: center;
-    text-align: center;
-  }
-  
-  .user-message {
-    background: #0d0d0e;
-    color: #fff;
-    align-self: flex-end;
-  }
-  
-  .ai-message {
-    background: #f0f2f5;
-    color: #333;
-    align-self: flex-start;
-  }
+}
+
+/* Optional: Style for user and AI messages specifically */
+.user-message, .ai-message {
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Optional: Differentiate user and AI messages with colors */
+.user-message {
+  background-color: #e0f7fa; /* Light blue for user messages */
+  align-self: flex-end;
+}
+
+.ai-message {
+  background-color: #f1f8e9; /* Light green for AI messages */
+  align-self: flex-start;
+}
   
   .typing-indicator {
     padding: 10px;

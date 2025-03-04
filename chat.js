@@ -44,15 +44,26 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Firebase database not initialized");
   }
 
-  // Add message to chat box with markdown parsing using regex
+  // Add message to chat box with fade-in animation and markdown parsing
   function addMessage(text, className) {
     const messageDiv = document.createElement("div");
-    messageDiv.classList.add("message", className);
+    messageDiv.classList.add("message", className); // Add .message class immediately
 
     // Parse markdown bold (**text**) to HTML <strong> tags using regex
     const parsedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     messageDiv.innerHTML = `<p>${parsedText}</p>`;
+
+    // Add the message to the chat box, triggering the animation
     chatBox.appendChild(messageDiv);
+
+    // Ensure the animation plays by adding a small delay or forcing reflow
+    requestAnimationFrame(() => {
+      messageDiv.style.opacity = '0'; // Reset opacity
+      requestAnimationFrame(() => {
+        messageDiv.style.opacity = '1'; // Trigger the animation by changing opacity
+      });
+    });
+
     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
   }
 
