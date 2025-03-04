@@ -68,27 +68,39 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// Back to Top Button
+// Back to Top Button with Smooth Fade Out
 const backToTop = document.getElementById('back-to-top');
+let scrollTimeout;
+
 window.addEventListener('scroll', () => {
+  // Clear any existing timeout
+  clearTimeout(scrollTimeout);
+
+  // Show the button when scrolled down
   if(window.scrollY > 300) {
     backToTop.style.display = 'block';
+    backToTop.style.opacity = '1';
   } else {
-    backToTop.style.display = 'none';
+    backToTop.style.opacity = '0';
+    // Use a slight delay before hiding to complete fade out
+    setTimeout(() => {
+      backToTop.style.display = 'none';
+    }, 300);
+    return;
   }
-});
-backToTop.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Set a timeout to fade out the button after inactivity
+  scrollTimeout = setTimeout(() => {
+    if(window.scrollY > 300) {
+      backToTop.style.opacity = '0';
+      // Use a slight delay before hiding to complete fade out
+      setTimeout(() => {
+        backToTop.style.display = 'none';
+      }, 300);
+    }
+  }, 1500); // 2 seconds of inactivity
 });
 
-// Close dropdowns when clicking elsewhere on the page
-document.addEventListener('click', function(event) {
-  const dropdown = document.querySelector('.account-dropdown');
-  const accountBtn = document.getElementById('account-btn');
-  
-  if (dropdown && dropdown.classList.contains('show') && 
-      !dropdown.contains(event.target) && 
-      !accountBtn.contains(event.target)) {
-    dropdown.classList.remove('show');
-  }
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });

@@ -727,13 +727,13 @@
 	cursor: pointer;
 	display: none;
 	z-index: 1001;
-	transition: background 0.3s ease;
+	opacity: 0;
+	transition: opacity 0.3s ease, background 0.3s ease, display 0.3s ease;
   }
   
   #back-to-top:hover {
 	background: rgb(59, 59, 59);
   }
-  
   /* Auth Modal Styles */
 .auth-modal {
 	display: none;
