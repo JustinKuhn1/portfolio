@@ -133,14 +133,15 @@
 /* Optional: Style for user and AI messages specifically */
 .user-message, .ai-message {
   margin: 5px 0;
-  padding: 5px;
+  padding: 8px;
   border-radius: 5px;
 }
 
 /* Optional: Differentiate user and AI messages with colors */
 .user-message {
-  background-color: #1a1b1b; /* Light blue for user messages */
+  background-color: #272727; /* Light blue for user messages */
   align-self: flex-end;
+  color: white;
 }
 
 .ai-message {
