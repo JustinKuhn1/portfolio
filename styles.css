@@ -774,6 +774,8 @@
 	color: #000;
   }
   
+  #chat-section {padding: 15px;}
+
   .auth-tabs {
 	display: flex;
 	margin-bottom: 20px;
