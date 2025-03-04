@@ -1,5 +1,0 @@
-.env
-node_modules/
-dist/  # If Vite generates a `dist` folder during builds
-*.log
-*.bak
