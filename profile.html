@@ -439,7 +439,8 @@
         userRef.get().then((doc) => {
           if (doc.exists) {
             const data = doc.data();
-            console.log('User data:', data); // Debug log
+            console.log('User data:', data); // Debug log to verify data
+
             document.getElementById('profile-joined').textContent = data.createdAt?.toDate().toLocaleDateString() || 'Unknown';
             document.getElementById('profile-last-login').textContent = data.lastLogin?.toDate().toLocaleString() || 'Unknown';
             document.getElementById('profile-bio').textContent = data.bio || 'Tell us about yourself!';
@@ -448,11 +449,12 @@
 
             // Check and display verification status
             const verifiedBadge = document.getElementById('verified-badge');
+            console.log('Verified badge element:', verifiedBadge); // Debug log to check if element exists
             if (verifiedBadge) {
               const isVerified = data.isVerified === true; // Explicitly check for true
               verifiedBadge.style.display = isVerified ? 'inline-block' : 'none';
             } else {
-              console.error('Verified badge element not found in the DOM.');
+              console.error('Verified badge element not found in the DOM. Check HTML for id="verified-badge".');
             }
           } else {
             console.error('User document does not exist in Firestore.');
