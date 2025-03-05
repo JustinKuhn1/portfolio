@@ -54,15 +54,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // Save message to user's chat history
   async function saveMessageToHistory(messageType, messageText) {
     const user = firebase.auth().currentUser;
-    if (!user) {
-      console.log("No user logged in. Cannot save chat history.");
-      return false;
-    }
-
+    if (!user) return false;
+  
     try {
-      const chatHistoryRef = db.collection("users").doc(user.uid).collection("chat_history");
-      
-      await chatHistoryRef.add({
+      const sessionsRef = db.collection("users").doc(user.uid).collection("chat_sessions");
+      let sessionId = localStorage.getItem('currentSessionId');
+      if (!sessionId) {
+        const sessionDoc = await sessionsRef.add({
+          name: `Session ${Date.now()}`,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        sessionId = sessionDoc.id;
+        localStorage.setItem('currentSessionId', sessionId);
+      }
+      await sessionsRef.doc(sessionId).collection('messages').add({
         message: messageText,
         type: messageType,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -70,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       return true;
     } catch (error) {
-      console.error("Error saving message to chat history:", error);
+      console.error("Error saving message:", error);
       return false;
     }
   }
