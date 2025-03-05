@@ -421,6 +421,8 @@
       let chatHistory = [];
       let currentSessionId = null;
 
+      console.log('DOM fully loaded, checking for verified-badge...'); // Debug log
+
       // Redirect to login if not authenticated
       firebase.auth().onAuthStateChanged((user) => {
         if (!user) {
@@ -431,7 +433,7 @@
         const userRef = firebase.firestore().collection('users').doc(user.uid);
         const sessionsRef = userRef.collection('chat_sessions');
 
-        // Populate profile info
+        // Populate profile info and verify badge
         document.getElementById('profile-username').textContent = user.displayName || user.email.split('@')[0];
         document.getElementById('profile-email').textContent = user.email;
         document.getElementById('profile-avatar').src = user.photoURL || 'images/default-avatar.png';
@@ -447,14 +449,23 @@
             document.getElementById('edit-name').value = data.name || '';
             document.getElementById('edit-bio').value = data.bio || '';
 
-            // Check and display verification status
+            // Check and display verification status with enhanced debugging
             const verifiedBadge = document.getElementById('verified-badge');
-            console.log('Verified badge element:', verifiedBadge); // Debug log to check if element exists
+            console.log('Verified badge element:', verifiedBadge); // Log to check if element exists
             if (verifiedBadge) {
               const isVerified = data.isVerified === true; // Explicitly check for true
               verifiedBadge.style.display = isVerified ? 'inline-block' : 'none';
+              console.log('Verification status:', isVerified); // Log verification status
             } else {
               console.error('Verified badge element not found in the DOM. Check HTML for id="verified-badge".');
+              // Attempt to find the element again with a fallback
+              const fallbackBadge = document.querySelector('.verified-badge');
+              if (fallbackBadge) {
+                console.warn('Found badge via class, but ID is missing. Using fallback.');
+                fallbackBadge.style.display = data.isVerified === true ? 'inline-block' : 'none';
+              } else {
+                console.error('No verified badge found by class or ID.');
+              }
             }
           } else {
             console.error('User document does not exist in Firestore.');
