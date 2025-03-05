@@ -386,7 +386,7 @@
             document.getElementById('profile-joined').textContent = data.createdAt?.toDate().toLocaleDateString() || 'Unknown';
             document.getElementById('profile-last-login').textContent = data.lastLogin?.toDate().toLocaleString() || 'Unknown';
             document.getElementById('profile-bio').textContent = data.bio || 'Tell us about yourself!';
-            if (data.isVerified) {
+            if (data.isVerified == true) {
               document.getElementById('verified-badge').style.display = 'inline';
             }
             document.getElementById('edit-name').value = data.name || '';
