@@ -23,6 +23,7 @@
       background: white;
       border-radius: var(--border-radius);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
     .profile-header {
@@ -73,6 +74,20 @@
       margin-top: 40px;
     }
 
+    .chat-history-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .chat-history-search {
+      padding: 8px;
+      width: 200px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
     .chat-history-list {
       max-height: 400px;
       overflow-y: auto;
@@ -110,6 +125,7 @@
       border-radius: var(--border-radius);
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       text-align: center;
+      transition: background 0.3s ease;
     }
 
     .stat-card h3 {
@@ -130,6 +146,93 @@
       background: #0056b3;
     }
 
+    .delete-account-btn {
+      background: #dc3545;
+    }
+
+    .delete-account-btn:hover {
+      background: #b02a37;
+    }
+
+    /* Dark Mode */
+    .dark-mode .profile-container {
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    .dark-mode .stat-card,
+    .dark-mode .chat-message {
+      background: #2c2c2c;
+    }
+
+    .dark-mode .chat-message.user {
+      background: #1e3a5f;
+    }
+
+    .dark-mode .chat-message.ai {
+      background: #2e4a2e;
+    }
+
+    .dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    /* Edit Profile Modal */
+    .edit-profile-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .edit-profile-modal-content {
+      background: white;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .edit-profile-modal-content h2 {
+      margin-bottom: 20px;
+    }
+
+    .edit-profile-modal-content input,
+    .edit-profile-modal-content textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .edit-profile-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .dark-mode .edit-profile-modal-content {
+      background: #2c2c2c;
+      color: #fff;
+    }
+
     @media (max-width: 768px) {
       .profile-container {
         margin: 80px 10px;
@@ -140,11 +243,20 @@
         flex-direction: column;
         text-align: center;
       }
+
+      .chat-history-controls {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .chat-history-search {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Header (Same as index.html) -->
+  <!-- Header -->
   <header class="header" id="header">
     <nav class="nav container">
       <div class="logo">
@@ -174,6 +286,7 @@
 
   <!-- Profile Content -->
   <div class="profile-container">
+    <button class="dark-mode-toggle" id="dark-mode-toggle"><i class="fas fa-moon"></i></button>
     <div class="profile-header">
       <img src="images/default-avatar.png" alt="User Avatar" class="profile-avatar" id="profile-avatar">
       <div class="profile-info">
@@ -189,6 +302,7 @@
       <div class="profile-actions">
         <button class="btn edit-profile-btn">Edit Profile</button>
         <button class="btn" id="logout-btn">Logout</button>
+        <button class="btn delete-account-btn">Delete Account</button>
       </div>
     </div>
 
@@ -209,13 +323,31 @@
 
     <div class="chat-history-section">
       <h2>Chat History</h2>
+      <div class="chat-history-controls">
+        <input type="text" class="chat-history-search" id="chat-search" placeholder="Search chat history...">
+        <button class="btn" id="download-chat-btn">Download History</button>
+      </div>
       <div class="chat-history-list" id="chat-history-list">
         <!-- Chat history will be populated here -->
       </div>
     </div>
   </div>
 
-  <!-- Footer (Same as index.html) -->
+  <!-- Edit Profile Modal -->
+  <div class="edit-profile-modal" id="edit-profile-modal">
+    <div class="edit-profile-modal-content">
+      <span class="edit-profile-modal-close" id="edit-profile-close">&times;</span>
+      <h2>Edit Profile</h2>
+      <form id="edit-profile-form">
+        <input type="text" id="edit-name" placeholder="Display Name" required>
+        <textarea id="edit-bio" placeholder="Bio" rows="4"></textarea>
+        <input type="file" id="edit-avatar" accept="image/*">
+        <button type="submit" class="btn">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-column">
@@ -241,7 +373,7 @@
           <a href="https://github.com/JustinKuhn1" target="_blank"><i class="ri-github-line"></i></a>
           <a href="https://www.linkedin.com/in/justin-kuhn-98246a328/" target="_blank"><i class="ri-linkedin-box-line"></i></a>
         </div>
-        <p>&copy; 2025 KuhnAI. All rights reserved.</p>
+        <p>© 2025 KuhnAI. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -260,6 +392,15 @@
     document.addEventListener('DOMContentLoaded', () => {
       const logoutBtn = document.getElementById('logout-btn');
       const chatHistoryList = document.getElementById('chat-history-list');
+      const editProfileBtn = document.querySelector('.edit-profile-btn');
+      const editProfileModal = document.getElementById('edit-profile-modal');
+      const editProfileClose = document.getElementById('edit-profile-close');
+      const editProfileForm = document.getElementById('edit-profile-form');
+      const deleteAccountBtn = document.querySelector('.delete-account-btn');
+      const chatSearch = document.getElementById('chat-search');
+      const downloadChatBtn = document.getElementById('download-chat-btn');
+      const darkModeToggle = document.getElementById('dark-mode-toggle');
+      let chatHistory = [];
 
       // Redirect to login if not authenticated
       firebase.auth().onAuthStateChanged((user) => {
@@ -268,13 +409,13 @@
           return;
         }
 
+        const userRef = firebase.firestore().collection('users').doc(user.uid);
+
         // Populate profile info
         document.getElementById('profile-username').textContent = user.displayName || user.email.split('@')[0];
         document.getElementById('profile-email').textContent = user.email;
         document.getElementById('profile-avatar').src = user.photoURL || 'images/default-avatar.png';
 
-        // Fetch user data from Firestore
-        const userRef = firebase.firestore().collection('users').doc(user.uid);
         userRef.get().then((doc) => {
           if (doc.exists) {
             const data = doc.data();
@@ -284,12 +425,9 @@
             if (data.isVerified) {
               document.getElementById('verified-badge').style.display = 'inline';
             }
+            document.getElementById('edit-name').value = data.name || '';
+            document.getElementById('edit-bio').value = data.bio || '';
           }
-        });
-
-        // Update last login
-        userRef.update({
-          lastLogin: firebase.firestore.FieldValue.serverTimestamp()
         });
 
         // Load chat history
@@ -299,16 +437,8 @@
           .get()
           .then((snapshot) => {
             chatHistoryList.innerHTML = '';
-            snapshot.forEach((doc) => {
-              const msg = doc.data();
-              const msgDiv = document.createElement('div');
-              msgDiv.className = `chat-message ${msg.type}`;
-              msgDiv.innerHTML = `
-                <p>${msg.message}</p>
-                <small>${msg.timestamp?.toDate().toLocaleString() || 'Unknown time'}</small>
-              `;
-              chatHistoryList.appendChild(msgDiv);
-            });
+            chatHistory = snapshot.docs.map(doc => doc.data());
+            renderChatHistory(chatHistory);
           });
 
         // Load stats
@@ -330,6 +460,113 @@
           });
       });
 
+      // Render chat history
+      function renderChatHistory(messages) {
+        chatHistoryList.innerHTML = '';
+        messages.forEach(msg => {
+          const msgDiv = document.createElement('div');
+          msgDiv.className = `chat-message ${msg.type}`;
+          msgDiv.innerHTML = `
+            <p>${msg.message}</p>
+            <small>${msg.timestamp?.toDate().toLocaleString() || 'Unknown time'}</small>
+          `;
+          chatHistoryList.appendChild(msgDiv);
+        });
+      }
+
+      // Chat history search
+      chatSearch.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const filteredHistory = chatHistory.filter(msg => 
+          msg.message.toLowerCase().includes(query)
+        );
+        renderChatHistory(filteredHistory);
+      });
+
+      // Download chat history
+      downloadChatBtn.addEventListener('click', () => {
+        const text = chatHistory.map(msg => 
+          `[${msg.timestamp?.toDate().toLocaleString() || 'Unknown'}] ${msg.type.toUpperCase()}: ${msg.message}`
+        ).join('\n');
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'chat_history.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // Edit profile modal
+      editProfileBtn.addEventListener('click', () => {
+        editProfileModal.style.display = 'block';
+      });
+
+      editProfileClose.addEventListener('click', () => {
+        editProfileModal.style.display = 'none';
+      });
+
+      window.addEventListener('click', (e) => {
+        if (e.target === editProfileModal) {
+          editProfileModal.style.display = 'none';
+        }
+      });
+
+      editProfileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('edit-name').value;
+        const bio = document.getElementById('edit-bio').value;
+        const avatarFile = document.getElementById('edit-avatar').files[0];
+        const user = firebase.auth().currentUser;
+
+        if (avatarFile) {
+          // Placeholder for Firebase Storage (requires additional setup)
+          alert('Avatar upload not implemented yet. Requires Firebase Storage setup.');
+        }
+
+        user.updateProfile({ displayName: name }).then(() => {
+          return firebase.firestore().collection('users').doc(user.uid).update({
+            name: name,
+            bio: bio
+          });
+        }).then(() => {
+          document.getElementById('profile-username').textContent = name;
+          document.getElementById('profile-bio').textContent = bio || 'Tell us about yourself!';
+          editProfileModal.style.display = 'none';
+          alert('Profile updated successfully!');
+        }).catch(error => {
+          console.error('Error updating profile:', error);
+          alert('Failed to update profile: ' + error.message);
+        });
+      });
+
+      // Delete account
+      deleteAccountBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+          const user = firebase.auth().currentUser;
+          firebase.firestore().collection('users').doc(user.uid).collection('chat_history')
+            .get()
+            .then(snapshot => {
+              const batch = firebase.firestore().batch();
+              snapshot.docs.forEach(doc => batch.delete(doc.ref));
+              return batch.commit();
+            })
+            .then(() => {
+              return firebase.firestore().collection('users').doc(user.uid).delete();
+            })
+            .then(() => {
+              return user.delete();
+            })
+            .then(() => {
+              window.location.href = 'index.html';
+            })
+            .catch(error => {
+              console.error('Error deleting account:', error);
+              alert('Failed to delete account: ' + error.message);
+            });
+        }
+      });
+
       // Logout functionality
       logoutBtn.addEventListener('click', () => {
         firebase.auth().signOut().then(() => {
@@ -337,10 +574,20 @@
         });
       });
 
-      // Edit profile (placeholder for future modal)
-      document.querySelector('.edit-profile-btn').addEventListener('click', () => {
-        alert('Edit profile feature coming soon!');
+      // Dark mode toggle
+      darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        darkModeToggle.innerHTML = document.body.classList.contains('dark-mode') 
+          ? '<i class="fas fa-sun"></i>' 
+          : '<i class="fas fa-moon"></i>';
+        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
       });
+
+      // Load dark mode preference
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      }
     });
   </script>
 </body>
