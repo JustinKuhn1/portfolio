@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // Track whether history has been loaded
+  let historyLoaded = false;
+
   // Modal for chat history
   function createChatHistoryModal() {
     const modal = document.createElement('div');
@@ -24,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="chat-history-content">
         <div class="chat-history-header">
           <h2>Chat History</h2>
-          <button id="close-history-modal">&times;</button>
+          <button id="close-history-modal">×</button>
         </div>
         <div id="chat-history-list" class="chat-history-list">
           <!-- History items will be populated here -->
@@ -72,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Fetch and display chat history
+  // Fetch and display chat history in modal
   async function displayChatHistory() {
     console.log("Attempting to display chat history");
 
@@ -109,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
         messageItem.classList.add('history-message');
         messageItem.classList.add(messageData.type === 'user' ? 'user-history' : 'ai-history');
         
-        // Format timestamp
         const timestamp = messageData.timestamp 
           ? new Date(messageData.timestamp.toDate()).toLocaleString() 
           : 'Unknown time';
@@ -131,23 +133,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Add message to chat box
-  function addMessage(text, className) {
+  // Add message to chat box (without saving to history if loadingHistory is true)
+  function addMessage(text, className, loadingHistory = false) {
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("message", className);
 
-    // Parse markdown bold (**text**) to HTML <strong> tags
     const parsedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     messageDiv.innerHTML = `<p>${parsedText}</p>`;
 
-    // Add message to chat box
     chatBox.appendChild(messageDiv);
 
-    // Save message to history
-    const messageType = className === 'user-message' ? 'user' : 'ai';
-    saveMessageToHistory(messageType, text);
+    // Only save to history if not loading existing history
+    if (!loadingHistory) {
+      const messageType = className === 'user-message' ? 'user' : 'ai';
+      saveMessageToHistory(messageType, text);
+    }
 
-    // Animation and scroll
     requestAnimationFrame(() => {
       messageDiv.style.opacity = '0';
       requestAnimationFrame(() => {
@@ -160,7 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Fetch AI response from Cloudflare Worker
   async function fetchAIResponse(userInput, mode = "default") {
-    const typingIndicator = document.getElementById("typing-indicator");
     typingIndicator.style.display = "flex";
 
     try {
@@ -178,7 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await response.json();
       
-      // Extract response from various possible formats
       const aiResponse = 
         data.result || 
         data.response || 
@@ -206,13 +205,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputText = chatInput.value.trim();
     if (!inputText) return;
 
-    // Add user message
     addMessage(inputText, "user-message");
-    chatInput.value = ""; // Clear input
-    chatSend.disabled = true; // Disable send button
+    chatInput.value = "";
+    chatSend.disabled = true;
 
     try {
-      // Fetch and display AI response
       const aiResponse = await fetchAIResponse(inputText, mode);
       addMessage(aiResponse, "ai-message");
     } catch (error) {
@@ -233,21 +230,17 @@ document.addEventListener("DOMContentLoaded", () => {
               statusElement.textContent = statusData.message;
               statusElement.style.color =
                 statusData.type === "online"
-                  ? "#28a745" // Green
+                  ? "#28a745"
                   : statusData.type === "updating"
-                  ? "rgb(231, 158, 0)" // Orange (from your CSS)
-                  : "#dc3545"; // Red
+                  ? "rgb(231, 158, 0)"
+                  : "#dc3545";
             }
-          } else {
-            console.log("No status document found");
           }
         },
         (error) => {
           console.error("Error getting status:", error);
         }
       );
-  } else {
-    console.error("Firebase database not initialized");
   }
 
   // Event Listeners
@@ -255,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   chatInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Prevent default enter key behavior
+      e.preventDefault();
       handleMessage("default");
     }
   });
@@ -264,7 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
     chatSend.disabled = !chatInput.value.trim();
   });
 
-  // Special mode buttons
   deepsearchBtn.addEventListener("click", () => {
     addMessage("DeepSearch is only available to KuhnAI developers. This feature will be coming soon to Pro accounts.", "ai-message");
   });
@@ -277,33 +269,30 @@ document.addEventListener("DOMContentLoaded", () => {
     addMessage("Attach feature coming soon!", "ai-message");
   });
 
-  // Load chat history on login
+  // Load chat history on login only once
   firebase.auth().onAuthStateChanged(async (user) => {
-    if (user) {
+    if (user && !historyLoaded) {
       try {
-        // Fetch chat history
         const chatHistoryRef = db.collection("users").doc(user.uid).collection("chat_history");
         const snapshot = await chatHistoryRef
           .orderBy("timestamp", "asc")
           .limit(50)
           .get();
 
-        // Clear welcome message
         const welcomeMessage = document.querySelector('.welcome-message');
         if (welcomeMessage) {
           welcomeMessage.remove();
         }
 
-        // Clear existing chat box content
-        chatBox.innerHTML = '';
+        chatBox.innerHTML = ''; // Clear existing chat box content
 
-        // Populate chat history
         snapshot.docs.forEach(doc => {
           const messageData = doc.data();
           const className = messageData.type === 'user' ? 'user-message' : 'ai-message';
-          addMessage(messageData.message, className);
+          addMessage(messageData.message, className, true); // Pass true to avoid saving
         });
 
+        historyLoaded = true; // Mark history as loaded
       } catch (error) {
         console.error("Error loading chat history:", error);
       }
@@ -315,7 +304,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatHistoryBtn = document.getElementById('chat-history-btn');
     if (chatHistoryBtn) {
       chatHistoryBtn.addEventListener('click', () => {
-        console.log("Chat history button clicked");
         const user = firebase.auth().currentUser;
         if (user) {
           displayChatHistory();
@@ -323,15 +311,11 @@ document.addEventListener("DOMContentLoaded", () => {
           alert('Please log in to view chat history.');
         }
       });
-    } else {
-      console.error("Chat history button not found");
     }
   }
 
-  // Call setup function
   setupChatHistoryButton();
 
-  // Initial setup
   chatSend.disabled = true;
   console.log("Chat functionality initialized successfully");
 });
