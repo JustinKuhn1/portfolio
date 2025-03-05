@@ -279,23 +279,23 @@ document.addEventListener("DOMContentLoaded", () => {
           .orderBy("timestamp", "asc")
           .limit(50)
           .get();
-  
+
         // Clear welcome message
         const welcomeMessage = document.querySelector('.welcome-message');
         if (welcomeMessage) {
           welcomeMessage.remove();
         }
-  
-        // Check if chat box is currently empty (to prevent duplicate loading)
-        const existingMessages = chatBox.querySelectorAll('.message');
-        if (existingMessages.length === 0) {
-          // Only populate chat if no messages exist
-          snapshot.docs.forEach(doc => {
-            const messageData = doc.data();
-            const className = messageData.type === 'user' ? 'user-message' : 'ai-message';
-            addMessage(messageData.message, className);
-          });
-        }
+
+        // Clear existing chat box content
+        chatBox.innerHTML = '';
+
+        // Populate chat history
+        snapshot.docs.forEach(doc => {
+          const messageData = doc.data();
+          const className = messageData.type === 'user' ? 'user-message' : 'ai-message';
+          addMessage(messageData.message, className);
+        });
+
       } catch (error) {
         console.error("Error loading chat history:", error);
       }
