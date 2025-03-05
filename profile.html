@@ -381,18 +381,27 @@
         document.getElementById('profile-avatar').src = user.photoURL || 'images/default-avatar.png';
 
         userRef.get().then((doc) => {
-          if (doc.exists) {
-            const data = doc.data();
-            document.getElementById('profile-joined').textContent = data.createdAt?.toDate().toLocaleDateString() || 'Unknown';
-            document.getElementById('profile-last-login').textContent = data.lastLogin?.toDate().toLocaleString() || 'Unknown';
-            document.getElementById('profile-bio').textContent = data.bio || 'Tell us about yourself!';
-            if (data.isVerified == true) {
-              document.getElementById('verified-badge').style.display = 'inline';
-            }
-            document.getElementById('edit-name').value = data.name || '';
-            document.getElementById('edit-bio').value = data.bio || '';
-          }
-        });
+  if (doc.exists) {
+    const data = doc.data();
+    console.log('Verification status:', data.isVerified); // Debug log
+
+    // Use strict equality and handle potential undefined case
+    if (data.isVerified === true) {
+      const verifiedBadge = document.getElementById('verified-badge');
+      if (verifiedBadge) {
+        verifiedBadge.style.display = 'inline-block'; // More reliable than 'inline'
+      } else {
+        console.error('Verified badge element not found');
+      }
+    }
+
+    document.getElementById('profile-joined').textContent = data.createdAt?.toDate().toLocaleDateString() || 'Unknown';
+    document.getElementById('profile-last-login').textContent = data.lastLogin?.toDate().toLocaleString() || 'Unknown';
+    document.getElementById('profile-bio').textContent = data.bio || 'Tell us about yourself!';
+    document.getElementById('edit-name').value = data.name || '';
+    document.getElementById('edit-bio').value = data.bio || '';
+  }
+});
 
         // Load chat history
         firebase.firestore().collection('users').doc(user.uid).collection('chat_history')
