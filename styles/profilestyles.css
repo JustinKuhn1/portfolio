@@ -130,20 +130,25 @@
     color: var(--primary-color);
   }
 
+  .profile-actions .btn {
+    border: none;
+    font-size: 13px;
+    padding: 8px;
+  }
   .edit-profile-btn {
-    background: #007bff;
+    background: #000000;
   }
 
   .edit-profile-btn:hover {
-    background: #0056b3;
+    background: #1b1b1b;
   }
 
   .delete-account-btn {
-    background: #dc3545;
+    background: #d32435;
   }
 
   .delete-account-btn:hover {
-    background: #b02a37;
+    background: #b32231;
   }
 
   /* Dark Mode */
