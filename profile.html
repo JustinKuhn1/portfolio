@@ -16,7 +16,60 @@
 
   <!-- Additional Profile Styles -->
   <style>
-    /* Existing styles remain unchanged until chat-history-section */
+    .profile-container {
+      max-width: 900px;
+      margin: 100px auto;
+      padding: 20px;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary-color);
+    }
+
+    .profile-info h1 {
+      font-size: 2rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .verified-badge {
+      color: #28a745;
+      font-size: 1.2rem;
+    }
+
+    .profile-details {
+      margin: 20px 0;
+    }
+
+    .profile-details p {
+      font-size: 1rem;
+      margin: 10px 0;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
     .chat-history-section {
       margin-top: 40px;
     }
@@ -26,8 +79,6 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
-      flex-wrap: wrap;
-      gap: 10px;
     }
 
     .chat-history-search {
@@ -35,13 +86,6 @@
       width: 200px;
       border: 1px solid #ddd;
       border-radius: 5px;
-    }
-
-    .chat-session-select {
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      max-width: 200px;
     }
 
     .chat-history-list {
@@ -57,7 +101,6 @@
       margin: 5px 0;
       border-radius: 5px;
       background: #f9f9f9;
-      position: relative;
     }
 
     .chat-message.user {
@@ -69,11 +112,116 @@
       background: #f1f8e9;
     }
 
-    /* Rest of the styles remain unchanged */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .stat-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: background 0.3s ease;
+    }
+
+    .stat-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .stat-card p {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    .edit-profile-btn {
+      background: #007bff;
+    }
+
+    .edit-profile-btn:hover {
+      background: #0056b3;
+    }
+
+    .delete-account-btn {
+      background: #dc3545;
+    }
+
+    .delete-account-btn:hover {
+      background: #b02a37;
+    }
+
+    /* Edit Profile Modal */
+    .edit-profile-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .edit-profile-modal-content {
+      background: white;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .edit-profile-modal-content h2 {
+      margin-bottom: 20px;
+    }
+
+    .edit-profile-modal-content input,
+    .edit-profile-modal-content textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .edit-profile-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .profile-container {
+        margin: 80px 10px;
+        padding: 15px;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .chat-history-controls {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .chat-history-search {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Header (unchanged) -->
+  <!-- Header -->
   <header class="header" id="header">
     <nav class="nav container">
       <div class="logo">
@@ -103,7 +251,6 @@
 
   <!-- Profile Content -->
   <div class="profile-container">
-    <button class="dark-mode-toggle" id="dark-mode-toggle"><i class="fas fa-moon"></i></button>
     <div class="profile-header">
       <img src="images/default-avatar.png" alt="User Avatar" class="profile-avatar" id="profile-avatar">
       <div class="profile-info">
@@ -141,10 +288,6 @@
     <div class="chat-history-section">
       <h2>Chat History</h2>
       <div class="chat-history-controls">
-        <select class="chat-session-select" id="chat-session-select">
-          <option value="">Select a session</option>
-        </select>
-        <button class="btn" id="new-chat-session">New Chat Session</button>
         <input type="text" class="chat-history-search" id="chat-search" placeholder="Search chat history...">
         <button class="btn" id="download-chat-btn">Download History</button>
       </div>
@@ -154,10 +297,10 @@
     </div>
   </div>
 
-  <!-- Edit Profile Modal (unchanged) -->
+  <!-- Edit Profile Modal -->
   <div class="edit-profile-modal" id="edit-profile-modal">
     <div class="edit-profile-modal-content">
-      <span class="edit-profile-modal-close" id="edit-profile-close">×</span>
+      <span class="edit-profile-modal-close" id="edit-profile-close">&times;</span>
       <h2>Edit Profile</h2>
       <form id="edit-profile-form">
         <input type="text" id="edit-name" placeholder="Display Name" required>
@@ -168,7 +311,7 @@
     </div>
   </div>
 
-  <!-- Footer (unchanged) -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-column">
@@ -220,11 +363,8 @@
       const deleteAccountBtn = document.querySelector('.delete-account-btn');
       const chatSearch = document.getElementById('chat-search');
       const downloadChatBtn = document.getElementById('download-chat-btn');
-      const darkModeToggle = document.getElementById('dark-mode-toggle');
-      const newChatSessionBtn = document.getElementById('new-chat-session');
-      const chatSessionSelect = document.getElementById('chat-session-select');
+      
       let chatHistory = [];
-      let currentSessionId = null;
 
       // Redirect to login if not authenticated
       firebase.auth().onAuthStateChanged((user) => {
@@ -234,7 +374,6 @@
         }
 
         const userRef = firebase.firestore().collection('users').doc(user.uid);
-        const sessionsRef = userRef.collection('chat_sessions');
 
         // Populate profile info
         document.getElementById('profile-username').textContent = user.displayName || user.email.split('@')[0];
@@ -255,49 +394,35 @@
           }
         });
 
-        // Load chat sessions
-        loadChatSessions();
+        // Load chat history
+        firebase.firestore().collection('users').doc(user.uid).collection('chat_history')
+          .orderBy('timestamp', 'desc')
+          .limit(50)
+          .get()
+          .then((snapshot) => {
+            chatHistoryList.innerHTML = '';
+            chatHistory = snapshot.docs.map(doc => doc.data());
+            renderChatHistory(chatHistory);
+          });
 
         // Load stats
-        updateStats();
-      });
+        firebase.firestore().collection('users').doc(user.uid).collection('chat_history')
+          .get()
+          .then((snapshot) => {
+            const totalMessages = snapshot.size;
+            document.getElementById('stat-messages').textContent = totalMessages;
 
-      // Load chat sessions into dropdown
-      function loadChatSessions() {
-        const user = firebase.auth().currentUser;
-        const sessionsRef = firebase.firestore().collection('users').doc(user.uid).collection('chat_sessions');
-        sessionsRef.orderBy('createdAt', 'desc').get().then((snapshot) => {
-          chatSessionSelect.innerHTML = '<option value="">Select a session</option>';
-          snapshot.forEach(doc => {
-            const session = doc.data();
-            const option = document.createElement('option');
-            option.value = doc.id;
-            option.textContent = session.name || `Session ${doc.id.slice(0, 8)}`;
-            chatSessionSelect.appendChild(option);
+            const uniqueDays = new Set();
+            snapshot.forEach(doc => {
+              const date = doc.data().timestamp?.toDate().toDateString();
+              if (date) uniqueDays.add(date);
+            });
+            document.getElementById('stat-days').textContent = uniqueDays.size;
+
+            const aiInteractions = snapshot.docs.filter(doc => doc.data().type === 'ai').length;
+            document.getElementById('stat-interactions').textContent = aiInteractions;
           });
-          if (snapshot.docs.length > 0) {
-            chatSessionSelect.value = snapshot.docs[0].id; // Default to latest session
-            loadSessionMessages(snapshot.docs[0].id);
-          }
-        });
-      }
-
-      // Load messages for a specific session
-      function loadSessionMessages(sessionId) {
-        if (!sessionId) {
-          chatHistoryList.innerHTML = '<p>No session selected.</p>';
-          chatHistory = [];
-          return;
-        }
-        currentSessionId = sessionId;
-        const user = firebase.auth().currentUser;
-        const messagesRef = firebase.firestore().collection('users').doc(user.uid)
-          .collection('chat_sessions').doc(sessionId).collection('messages');
-        messagesRef.orderBy('timestamp', 'desc').limit(50).get().then((snapshot) => {
-          chatHistory = snapshot.docs.map(doc => doc.data());
-          renderChatHistory(chatHistory);
-        });
-      }
+      });
 
       // Render chat history
       function renderChatHistory(messages) {
@@ -312,26 +437,6 @@
           chatHistoryList.appendChild(msgDiv);
         });
       }
-
-      // Create new chat session
-      newChatSessionBtn.addEventListener('click', () => {
-        const user = firebase.auth().currentUser;
-        const sessionsRef = firebase.firestore().collection('users').doc(user.uid).collection('chat_sessions');
-        const sessionName = prompt('Enter a name for this chat session (optional):');
-        sessionsRef.add({
-          name: sessionName || `Session ${Date.now()}`,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        }).then((docRef) => {
-          loadChatSessions();
-          chatSessionSelect.value = docRef.id;
-          loadSessionMessages(docRef.id);
-        });
-      });
-
-      // Switch chat session
-      chatSessionSelect.addEventListener('change', (e) => {
-        loadSessionMessages(e.target.value);
-      });
 
       // Chat history search
       chatSearch.addEventListener('input', (e) => {
@@ -351,41 +456,12 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `chat_session_${currentSessionId || 'unknown'}.txt`;
+        a.download = 'chat_history.txt';
         a.click();
         URL.revokeObjectURL(url);
       });
 
-      // Update stats
-      function updateStats() {
-        const user = firebase.auth().currentUser;
-        const sessionsRef = firebase.firestore().collection('users').doc(user.uid).collection('chat_sessions');
-        sessionsRef.get().then((snapshot) => {
-          let totalMessages = 0;
-          let uniqueDays = new Set();
-          let aiInteractions = 0;
-
-          const promises = snapshot.docs.map(doc => 
-            doc.ref.collection('messages').get().then(msgSnapshot => {
-              totalMessages += msgSnapshot.size;
-              msgSnapshot.forEach(msgDoc => {
-                const msg = msgDoc.data();
-                const date = msg.timestamp?.toDate().toDateString();
-                if (date) uniqueDays.add(date);
-                if (msg.type === 'ai') aiInteractions++;
-              });
-            })
-          );
-
-          Promise.all(promises).then(() => {
-            document.getElementById('stat-messages').textContent = totalMessages;
-            document.getElementById('stat-days').textContent = uniqueDays.size;
-            document.getElementById('stat-interactions').textContent = aiInteractions;
-          });
-        });
-      }
-
-      // Edit profile modal (unchanged)
+      // Edit profile modal
       editProfileBtn.addEventListener('click', () => {
         editProfileModal.style.display = 'block';
       });
@@ -408,6 +484,7 @@
         const user = firebase.auth().currentUser;
 
         if (avatarFile) {
+          // Placeholder for Firebase Storage (requires additional setup)
           alert('Avatar upload not implemented yet. Requires Firebase Storage setup.');
         }
 
@@ -427,33 +504,30 @@
         });
       });
 
-      // Delete account (updated to include chat_sessions)
+      // Delete account
       deleteAccountBtn.addEventListener('click', () => {
         if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
           const user = firebase.auth().currentUser;
-          const userRef = firebase.firestore().collection('users').doc(user.uid);
-          const sessionsRef = userRef.collection('chat_sessions');
-
-          sessionsRef.get().then(snapshot => {
-            const batch = firebase.firestore().batch();
-            snapshot.docs.forEach(sessionDoc => {
-              const messagesRef = sessionsRef.doc(sessionDoc.id).collection('messages');
-              messagesRef.get().then(msgSnapshot => {
-                msgSnapshot.docs.forEach(msgDoc => batch.delete(msgDoc.ref));
-              });
-              batch.delete(sessionDoc.ref);
+          firebase.firestore().collection('users').doc(user.uid).collection('chat_history')
+            .get()
+            .then(snapshot => {
+              const batch = firebase.firestore().batch();
+              snapshot.docs.forEach(doc => batch.delete(doc.ref));
+              return batch.commit();
+            })
+            .then(() => {
+              return firebase.firestore().collection('users').doc(user.uid).delete();
+            })
+            .then(() => {
+              return user.delete();
+            })
+            .then(() => {
+              window.location.href = 'index.html';
+            })
+            .catch(error => {
+              console.error('Error deleting account:', error);
+              alert('Failed to delete account: ' + error.message);
             });
-            return batch.commit();
-          }).then(() => {
-            return userRef.delete();
-          }).then(() => {
-            return user.delete();
-          }).then(() => {
-            window.location.href = 'index.html';
-          }).catch(error => {
-            console.error('Error deleting account:', error);
-            alert('Failed to delete account: ' + error.message);
-          });
         }
       });
 
@@ -464,19 +538,6 @@
         });
       });
 
-      // Dark mode toggle (unchanged)
-      darkModeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        darkModeToggle.innerHTML = document.body.classList.contains('dark-mode') 
-          ? '<i class="fas fa-sun"></i>' 
-          : '<i class="fas fa-moon"></i>';
-        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-      });
-
-      if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-      }
     });
   </script>
 </body>
