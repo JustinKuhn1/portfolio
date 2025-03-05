@@ -215,3 +215,100 @@ if (db) {
   chatSend.disabled = true;
   console.log("Chat functionality initialized successfully");
 });
+
+// Add this function to the existing chat.js file, just before or after the existing event listeners
+
+// Modal for chat history
+function createChatHistoryModal() {
+  // Create modal container
+  const modal = document.createElement('div');
+  modal.id = 'chat-history-modal';
+  modal.classList.add('chat-history-modal');
+  modal.innerHTML = `
+    <div class="chat-history-content">
+      <div class="chat-history-header">
+        <h2>Chat History</h2>
+        <button id="close-history-modal">&times;</button>
+      </div>
+      <div id="chat-history-list" class="chat-history-list">
+        <!-- History items will be populated here -->
+      </div>
+    </div>
+  `;
+
+  // Add modal to body
+  document.body.appendChild(modal);
+
+  // Close modal event
+  const closeBtn = modal.querySelector('#close-history-modal');
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+
+  return modal;
+}
+
+// Fetch and display chat history
+async function displayChatHistory() {
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    alert('Please log in to view chat history.');
+    return;
+  }
+
+  const modal = document.getElementById('chat-history-modal') || createChatHistoryModal();
+  const historyList = modal.querySelector('#chat-history-list');
+  historyList.innerHTML = ''; // Clear previous history
+
+  try {
+    const chatHistoryRef = db.collection("users").doc(user.uid).collection("chat_history");
+    const snapshot = await chatHistoryRef
+      .orderBy("timestamp", "desc")
+      .limit(100)
+      .get();
+
+    if (snapshot.empty) {
+      historyList.innerHTML = '<p>No chat history found.</p>';
+      return;
+    }
+
+    snapshot.docs.forEach(doc => {
+      const messageData = doc.data();
+      const messageItem = document.createElement('div');
+      messageItem.classList.add('history-message');
+      messageItem.classList.add(messageData.type === 'user' ? 'user-history' : 'ai-history');
+      
+      // Format timestamp
+      const timestamp = messageData.timestamp 
+        ? new Date(messageData.timestamp.toDate()).toLocaleString() 
+        : 'Unknown time';
+
+      messageItem.innerHTML = `
+        <div class="history-message-content">
+          <span class="history-timestamp">${timestamp}</span>
+          <p>${messageData.message}</p>
+        </div>
+      `;
+
+      historyList.appendChild(messageItem);
+    });
+
+    modal.style.display = 'block';
+  } catch (error) {
+    console.error("Error fetching chat history:", error);
+    alert('Failed to load chat history.');
+  }
+}
+
+// Add event listener for chat history button
+const chatHistoryBtn = document.getElementById('chat-history-btn');
+if (chatHistoryBtn) {
+  chatHistoryBtn.addEventListener('click', displayChatHistory);
+}
