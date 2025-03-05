@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>KuhnAI</title>
+  <title>KuhnAI Chat</title>
   <meta name="description" content="KuhnAI Chat">
   
   <!-- Styles & Icons -->
@@ -15,89 +15,53 @@
   <script src="https://kit.fontawesome.com/ad44d989fa.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
   <meta name="theme-color" content="#000000">
+
+  <style>
+    .chat-session-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: #f0f2f5;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .chat-session-select {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      max-width: 200px;
+    }
+  </style>
 </head>
 <body>
-
-  <!-- Preloader (optional) -->
-  <div id="preloader">
-    <div class="loader"></div>
-  </div>
-
- <!--==================== HEADER ====================-->
- <header class="header" id="header">
-  <nav class="nav container">
-    <div class="logo">
-      <a href="index.html">
-          <img src="images/weblogo-removebg-preview.png" alt="KuhnAI" 
-               style="height: 50px; vertical-align: middle;">
-      </a>
-    </div>
-
-     <div class="nav__menu" id="nav-menu">
+  <!-- Header (Same as index.html) -->
+  <header class="header" id="header">
+    <nav class="nav container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/weblogo-removebg-preview.png" alt="KuhnAI" style="height: 50px; vertical-align: middle;">
+        </a>
+      </div>
+      <div class="nav__menu" id="nav-menu">
         <ul class="nav__list">
-           <li class="nav__item">
-              <a href="#about" class="nav__link">
-                 <i class="ri-arrow-right-up-line"></i>
-                 <span>About Us</span>
-              </a>
-           </li>
-
-           <li class="nav__item">
-              <a href="#ai-demos" class="nav__link">
-                 <i class="ri-arrow-right-up-line"></i>
-                 <span>Demos</span>
-              </a>
-           </li>
-
-           <li class="nav__item">
-              <a href="blog.html" class="nav__link">
-                 <i class="ri-arrow-right-up-line"></i>
-                 <span>Blog</span>
-              </a>
-           </li>
-
-           <li class="nav__item">
-              <a href="#contact" class="nav__link">
-                 <i class="ri-arrow-right-up-line"></i>
-                 <span>Contact</span>
-              </a>
-           </li>
-           <li class="nav__item">
-            <a href="#" class="nav__link" id="account-btn">
-              <i class="ri-arrow-right-up-line"></i>
-              <span>Account</span>
-            </a>
-          </li>
+          <li class="nav__item"><a href="index.html#about" class="nav__link"><i class="ri-arrow-right-up-line"></i><span>About Us</span></a></li>
+          <li class="nav__item"><a href="index.html#ai-demos" class="nav__link"><i class="ri-arrow-right-up-line"></i><span>Demos</span></a></li>
+          <li class="nav__item"><a href="blog.html" class="nav__link"><i class="ri-arrow-right-up-line"></i><span>Blog</span></a></li>
+          <li class="nav__item"><a href="index.html#contact" class="nav__link"><i class="ri-arrow-right-up-line"></i><span>Contact</span></a></li>
+          <li class="nav__item"><a href="#" class="nav__link" id="account-btn"><i class="ri-arrow-right-up-line"></i><span>Account</span></a></li>
         </ul>
-
-        <!-- Close button -->
-        <div class="nav__close" id="nav-close">
-           <i class="ri-close-large-line"></i>
-        </div>
-
+        <div class="nav__close" id="nav-close"><i class="ri-close-large-line"></i></div>
         <div class="nav__social">
-           <a href="https://www.instagram.com/justinkuhnn" target="_blank" class="nav__social-link">
-              <i class="ri-instagram-line"></i>
-           </a>
-           <a href="https://x.com/justinkuhnn" target="_blank" class="nav__social-link">
-            <i class="ri-twitter-line"></i>
-          </a>
-           <a href="https://github.com/JustinKuhn1" target="_blank" class="nav__social-link">
-              <i class="ri-github-line"></i>
-           </a>
-
-           <a href="https://www.linkedin.com/in/justin-kuhn-98246a328/" target="_blank" class="nav__social-link">
-              <i class="ri-linkedin-box-line"></i>
-           </a>
+          <a href="https://www.instagram.com/justinkuhnn" target="_blank" class="nav__social-link"><i class="ri-instagram-line"></i></a>
+          <a href="https://x.com/justinkuhnn" target="_blank" class="nav__social-link"><i class="ri-twitter-line"></i></a>
+          <a href="https://github.com/JustinKuhn1" target="_blank" class="nav__social-link"><i class="ri-github-line"></i></a>
+          <a href="https://www.linkedin.com/in/justin-kuhn-98246a328/" target="_blank" class="nav__social-link"><i class="ri-linkedin-box-line"></i></a>
         </div>
-     </div>
-
-     <!-- Toggle button -->
-     <div class="nav__toggle" id="nav-toggle">
-        <i class="ri-menu-line"></i>
-     </div>
-  </nav>
-</header>
+      </div>
+      <div class="nav__toggle" id="nav-toggle"><i class="ri-menu-line"></i></div>
+    </nav>
+  </header>
 
   <!-- Hero Section -->
   <section id="hero-chat">
@@ -106,92 +70,91 @@
       <p>Try out our newest chat model.</p>
       <a href="#chat-section" class="btnhero">Explore Now</a>
     </div>
-</section>
+  </section>
 
-<section id="chat-section">
-   <div class="chat-container">
-     <div class="chat-header">
-       <h2>KuhnNova o1</h2>
-       <span class="status">Updating...</span>
-     </div>
-     <div id="chat-box" class="chat-box">
-       <div class="message welcome-message">
-         <p>Hello! <span id="username-welcome"></span>I'm KuhnAI. What's on your mind?</p>
-       </div>
-     </div>
-     <div class="typing-indicator" id="typing-indicator" style="display: none;">
-       <span></span><span></span><span></span>
-     </div>
-     <div class="chat-input-container">
-       <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off" />
-       <div class="chat-buttons">
-        
-         <button id="deepsearch-btn" aria-label="Deepsearch" title="Perform a deep search">
-           <i class="fas fa-search-plus"></i> DeepSearch
-         </button>
-         <button id="think-btn" aria-label="Think" title="Think deeply">
-           <i class="fas fa-brain"></i> Think
-         </button>
-         <button id="attach-btn" aria-label="Attach" title="Attach a file">
-           <i class="fas fa-paperclip"></i>
-         </button>
-         <button id="chat-history-btn" aria-label="Chat History" title="View Chat History">
-          <i class="fas fa-history"></i> History
-        </button>
-         <button id="chat-send" aria-label="Send Message" title="Send">
-           <i class="fas fa-paper-plane"></i>
-         </button>
-       </div>
-     </div>
-   </div>
- </section>
-  
-<!-- Back to Top Button -->
-<button id="back-to-top" aria-label="Back to Top"><i class="fas fa-chevron-up"></i></button>
-  <!-- Footer -->
-   <!-- Footer -->
-   <footer class="footer">
-    <div class="footer-container">
-        <div class="footer-column">
-            <h3>KuhnAI</h3>
-            <p>Discover cutting-edge AI applications & research.</p>
-            <a href="#contact" class="footer-btn">Get in Touch</a>
+  <!-- Chat Section -->
+  <section id="chat-section">
+    <div class="chat-container">
+      <div class="chat-header">
+        <h2>KuhnNova o1</h2>
+        <span class="status">Updating...</span>
+      </div>
+      <div class="chat-session-controls">
+        <select class="chat-session-select" id="chat-session-select">
+          <option value="">Select a session</option>
+        </select>
+        <button class="btn" id="new-chat-session">New Chat</button>
+      </div>
+      <div id="chat-box" class="chat-box">
+        <div class="message welcome-message">
+          <p>Hello! <span id="username-welcome"></span>I'm KuhnAI. What's on your mind?</p>
         </div>
-
-        <div class="footer-column">
-            <h3>Quick Links</h3>
-            <ul class="footer-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#ai-demos">Demos</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+      </div>
+      <div class="typing-indicator" id="typing-indicator" style="display: none;">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="chat-input-container">
+        <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off" />
+        <div class="chat-buttons">
+          <button id="deepsearch-btn" aria-label="Deepsearch" title="Perform a deep search">
+            <i class="fas fa-search-plus"></i> DeepSearch
+          </button>
+          <button id="think-btn" aria-label="Think" title="Think deeply">
+            <i class="fas fa-brain"></i> Think
+          </button>
+          <button id="attach-btn" aria-label="Attach" title="Attach a file">
+            <i class="fas fa-paperclip"></i>
+          </button>
+          <button id="chat-history-btn" aria-label="Chat History" title="View Chat History">
+            <i class="fas fa-history"></i> History
+          </button>
+          <button id="chat-send" aria-label="Send Message" title="Send">
+            <i class="fas fa-paper-plane"></i>
+          </button>
         </div>
-
-        <div class="footer-column">
-            <h3>Follow Me</h3>
-            <div class="footer-social">
-                <a href="https://www.instagram.com/justinkuhnn" target="_blank"><i class="ri-instagram-line"></i></a>
-                <a href="https://x.com/justinkuhnn" target="_blank"><i class="ri-twitter-line"></i></a>
-                <a href="https://github.com/JustinKuhn1" target="_blank"><i class="ri-github-line"></i></a>
-                <a href="https://www.linkedin.com/in/justin-kuhn-98246a328/" target="_blank"><i class="ri-linkedin-box-line"></i></a>
-            </div>
-            <p>&copy; 2025 KuhnAI. All rights reserved.</p>
-        </div>
+      </div>
     </div>
-</footer>
+  </section>
 
-<!-- At the bottom of your HTML, right before the closing </body> tag -->
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <!-- Footer (Same as index.html) -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>KuhnAI</h3>
+        <p>Discover cutting-edge AI applications & research.</p>
+        <a href="index.html#contact" class="footer-btn">Get in Touch</a>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#ai-demos">Demos</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Follow Me</h3>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/justinkuhnn" target="_blank"><i class="ri-instagram-line"></i></a>
+          <a href="https://x.com/justinkuhnn" target="_blank"><i class="ri-twitter-line"></i></a>
+          <a href="https://github.com/JustinKuhn1" target="_blank"><i class="ri-github-line"></i></a>
+          <a href="https://www.linkedin.com/in/justin-kuhn-98246a328/" target="_blank"><i class="ri-linkedin-box-line"></i></a>
+        </div>
+        <p>&copy; 2025 KuhnAI. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-<!-- Your Firebase configuration script -->
-<script src="firebase-config.js"></script>
-<script src="auth.js"></script>
-<script src="chat.js"></script>  <!-- Make sure chat.js is loaded last -->
-<script src="script.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase Config and Auth -->
+  <script src="firebase-config.js"></script>
+  <script src="auth.js"></script>
+  <script src="chat.js"></script>
 </body>
 </html>

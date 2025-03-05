@@ -8,15 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const attachBtn = document.getElementById("attach-btn");
   const typingIndicator = document.getElementById("typing-indicator");
   const statusElement = document.querySelector(".status");
+  const chatSessionSelect = document.getElementById("chat-session-select");
+  const newChatSessionBtn = document.getElementById("new-chat-session");
 
   // Validate DOM elements
-  if (!chatBox || !chatInput || !chatSend || !deepsearchBtn || !thinkBtn || !attachBtn || !typingIndicator) {
+  if (!chatBox || !chatInput || !chatSend || !deepsearchBtn || !thinkBtn || !attachBtn || !typingIndicator || !chatSessionSelect || !newChatSessionBtn) {
     console.error("One or more chat DOM elements not found. Check your HTML IDs.");
     return;
   }
 
-  // Track whether history has been loaded
-  let historyLoaded = false;
+  let currentSessionId = localStorage.getItem('currentSessionId') || null;
 
   // Modal for chat history
   function createChatHistoryModal() {
@@ -38,14 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(modal);
 
     const closeBtn = modal.querySelector('#close-history-modal');
-    closeBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
     modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
+      if (e.target === modal) modal.style.display = 'none';
     });
 
     return modal;
@@ -55,19 +51,19 @@ document.addEventListener("DOMContentLoaded", () => {
   async function saveMessageToHistory(messageType, messageText) {
     const user = firebase.auth().currentUser;
     if (!user) return false;
-  
+
     try {
       const sessionsRef = db.collection("users").doc(user.uid).collection("chat_sessions");
-      let sessionId = localStorage.getItem('currentSessionId');
-      if (!sessionId) {
+      if (!currentSessionId) {
         const sessionDoc = await sessionsRef.add({
           name: `Session ${Date.now()}`,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
-        sessionId = sessionDoc.id;
-        localStorage.setItem('currentSessionId', sessionId);
+        currentSessionId = sessionDoc.id;
+        localStorage.setItem('currentSessionId', currentSessionId);
+        loadChatSessions(); // Refresh session list
       }
-      await sessionsRef.doc(sessionId).collection('messages').add({
+      await sessionsRef.doc(currentSessionId).collection('messages').add({
         message: messageText,
         type: messageType,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -82,73 +78,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Fetch and display chat history in modal
   async function displayChatHistory() {
-    console.log("Attempting to display chat history");
-
     const user = firebase.auth().currentUser;
     if (!user) {
-      console.error('No user logged in');
       alert('Please log in to view chat history.');
       return;
     }
 
     const modal = document.getElementById('chat-history-modal') || createChatHistoryModal();
     const historyList = modal.querySelector('#chat-history-list');
-    historyList.innerHTML = ''; // Clear previous history
+    historyList.innerHTML = '';
 
     try {
-      console.log(`Fetching history for user: ${user.uid}`);
-      const chatHistoryRef = db.collection("users").doc(user.uid).collection("chat_history");
-      const snapshot = await chatHistoryRef
-        .orderBy("timestamp", "desc")
-        .limit(100)
-        .get();
-
-      console.log(`Found ${snapshot.docs.length} history items`);
+      const sessionsRef = db.collection("users").doc(user.uid).collection("chat_sessions");
+      const snapshot = await sessionsRef.orderBy("createdAt", "desc").limit(100).get();
 
       if (snapshot.empty) {
-        historyList.innerHTML = '<p>No chat history found.</p>';
+        historyList.innerHTML = '<p>No chat sessions found.</p>';
         modal.style.display = 'block';
         return;
       }
 
-      snapshot.docs.forEach(doc => {
-        const messageData = doc.data();
-        const messageItem = document.createElement('div');
-        messageItem.classList.add('history-message');
-        messageItem.classList.add(messageData.type === 'user' ? 'user-history' : 'ai-history');
-        
-        const timestamp = messageData.timestamp 
-          ? new Date(messageData.timestamp.toDate()).toLocaleString() 
-          : 'Unknown time';
+      for (const sessionDoc of snapshot.docs) {
+        const sessionData = sessionDoc.data();
+        const messagesRef = sessionsRef.doc(sessionDoc.id).collection('messages');
+        const msgSnapshot = await messagesRef.orderBy("timestamp", "desc").limit(10).get();
 
-        messageItem.innerHTML = `
-          <div class="history-message-content">
-            <span class="history-timestamp">${timestamp}</span>
-            <p>${messageData.message}</p>
-          </div>
-        `;
+        const sessionHeader = document.createElement('h3');
+        sessionHeader.textContent = sessionData.name || `Session ${sessionDoc.id.slice(0, 8)}`;
+        historyList.appendChild(sessionHeader);
 
-        historyList.appendChild(messageItem);
-      });
+        msgSnapshot.forEach(doc => {
+          const messageData = doc.data();
+          const messageItem = document.createElement('div');
+          messageItem.classList.add('history-message', messageData.type === 'user' ? 'user-history' : 'ai-history');
+          const timestamp = messageData.timestamp 
+            ? new Date(messageData.timestamp.toDate()).toLocaleString() 
+            : 'Unknown time';
+          messageItem.innerHTML = `
+            <div class="history-message-content">
+              <span class="history-timestamp">${timestamp}</span>
+              <p>${messageData.message}</p>
+            </div>
+          `;
+          historyList.appendChild(messageItem);
+        });
+      }
 
       modal.style.display = 'block';
     } catch (error) {
       console.error("Error fetching chat history:", error);
-      alert('Failed to load chat history. Check console for details.');
+      alert('Failed to load chat history.');
     }
   }
 
-  // Add message to chat box (without saving to history if loadingHistory is true)
+  // Add message to chat box
   function addMessage(text, className, loadingHistory = false) {
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("message", className);
-
     const parsedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     messageDiv.innerHTML = `<p>${parsedText}</p>`;
-
     chatBox.appendChild(messageDiv);
 
-    // Only save to history if not loading existing history
     if (!loadingHistory) {
       const messageType = className === 'user-message' ? 'user' : 'ai';
       saveMessageToHistory(messageType, text);
@@ -156,47 +146,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     requestAnimationFrame(() => {
       messageDiv.style.opacity = '0';
-      requestAnimationFrame(() => {
-        messageDiv.style.opacity = '1';
-      });
+      requestAnimationFrame(() => messageDiv.style.opacity = '1');
     });
 
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
-  // Fetch AI response from Cloudflare Worker
+  // Fetch AI response
   async function fetchAIResponse(userInput, mode = "default") {
     typingIndicator.style.display = "flex";
-
     try {
       const response = await fetch('https://kuhnauthapi.kuhnj8313.workers.dev/chat', {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: userInput, mode: mode })
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
-      
-      const aiResponse = 
-        data.result || 
-        data.response || 
-        data.payload || 
-        data.text || 
-        data.message || 
-        data.output || 
-        data.generated_text || 
-        (data.choices && data.choices[0] && 
-          (data.choices[0].text || 
-           (data.choices[0].message && data.choices[0].message.content))) ||
-        "I couldn't generate a response.";
-
-      return aiResponse;
+      return data.result || data.response || data.text || "I couldn't generate a response.";
     } catch (error) {
       console.error("Worker API Error:", error);
       return "Sorry, there was an error connecting to the AI.";
@@ -218,108 +186,131 @@ document.addEventListener("DOMContentLoaded", () => {
       const aiResponse = await fetchAIResponse(inputText, mode);
       addMessage(aiResponse, "ai-message");
     } catch (error) {
-      console.error("Message handling error:", error);
       addMessage("An error occurred while processing your message.", "ai-message");
     }
   }
 
-  // Listen for status changes from Firestore
-  if (db) {
-    db.collection("system")
-      .doc("status")
-      .onSnapshot(
-        (doc) => {
-          if (doc.exists) {
-            const statusData = doc.data();
-            if (statusData && statusData.message) {
-              statusElement.textContent = statusData.message;
-              statusElement.style.color =
-                statusData.type === "online"
-                  ? "#28a745"
-                  : statusData.type === "updating"
-                  ? "rgb(231, 158, 0)"
-                  : "#dc3545";
-            }
-          }
-        },
-        (error) => {
-          console.error("Error getting status:", error);
-        }
-      );
+  // Load chat sessions
+  function loadChatSessions() {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+
+    const sessionsRef = db.collection("users").doc(user.uid).collection("chat_sessions");
+    sessionsRef.orderBy("createdAt", "desc").get().then((snapshot) => {
+      chatSessionSelect.innerHTML = '<option value="">Select a session</option>';
+      snapshot.forEach(doc => {
+        const session = doc.data();
+        const option = document.createElement('option');
+        option.value = doc.id;
+        option.textContent = session.name || `Session ${doc.id.slice(0, 8)}`;
+        chatSessionSelect.appendChild(option);
+      });
+      if (currentSessionId) {
+        chatSessionSelect.value = currentSessionId;
+        loadSessionMessages(currentSessionId);
+      } else if (snapshot.docs.length > 0) {
+        currentSessionId = snapshot.docs[0].id;
+        localStorage.setItem('currentSessionId', currentSessionId);
+        chatSessionSelect.value = currentSessionId;
+        loadSessionMessages(currentSessionId);
+      }
+    });
+  }
+
+  // Load messages for a specific session
+  function loadSessionMessages(sessionId) {
+    if (!sessionId) {
+      chatBox.innerHTML = '<div class="message welcome-message"><p>Hello! I\'m KuhnAI. What\'s on your mind?</p></div>';
+      return;
+    }
+    currentSessionId = sessionId;
+    localStorage.setItem('currentSessionId', sessionId);
+    const user = firebase.auth().currentUser;
+    const messagesRef = db.collection("users").doc(user.uid).collection("chat_sessions").doc(sessionId).collection('messages');
+    messagesRef.orderBy("timestamp", "asc").limit(50).get().then((snapshot) => {
+      chatBox.innerHTML = '';
+      snapshot.forEach(doc => {
+        const messageData = doc.data();
+        const className = messageData.type === 'user' ? 'user-message' : 'ai-message';
+        addMessage(messageData.message, className, true);
+      });
+    });
   }
 
   // Event Listeners
   chatSend.addEventListener("click", () => handleMessage("default"));
-  
   chatInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleMessage("default");
     }
   });
-
-  chatInput.addEventListener("input", () => {
-    chatSend.disabled = !chatInput.value.trim();
-  });
+  chatInput.addEventListener("input", () => chatSend.disabled = !chatInput.value.trim());
 
   deepsearchBtn.addEventListener("click", () => {
-    addMessage("DeepSearch is only available to KuhnAI developers. This feature will be coming soon to Pro accounts.", "ai-message");
+    addMessage("DeepSearch is only available to KuhnAI developers.", "ai-message");
   });
 
   thinkBtn.addEventListener("click", () => {
-    addMessage("Advanced reasoning is only available to KuhnAI developers. This feature will be coming soon to Pro accounts.", "ai-message");
+    addMessage("Advanced reasoning is only available to KuhnAI developers.", "ai-message");
   });
 
   attachBtn.addEventListener("click", () => {
     addMessage("Attach feature coming soon!", "ai-message");
   });
 
-  // Load chat history on login only once
-  firebase.auth().onAuthStateChanged(async (user) => {
-    if (user && !historyLoaded) {
-      try {
-        const chatHistoryRef = db.collection("users").doc(user.uid).collection("chat_history");
-        const snapshot = await chatHistoryRef
-          .orderBy("timestamp", "asc")
-          .limit(50)
-          .get();
+  newChatSessionBtn.addEventListener("click", () => {
+    const user = firebase.auth().currentUser;
+    if (!user) {
+      alert('Please log in to create a new chat session.');
+      return;
+    }
+    const sessionsRef = db.collection("users").doc(user.uid).collection("chat_sessions");
+    const sessionName = prompt('Enter a name for this chat session (optional):');
+    sessionsRef.add({
+      name: sessionName || `Session ${Date.now()}`,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then((docRef) => {
+      currentSessionId = docRef.id;
+      localStorage.setItem('currentSessionId', currentSessionId);
+      loadChatSessions();
+      chatBox.innerHTML = '<div class="message welcome-message"><p>Hello! I\'m KuhnAI. What\'s on your mind?</p></div>';
+    });
+  });
 
-        const welcomeMessage = document.querySelector('.welcome-message');
-        if (welcomeMessage) {
-          welcomeMessage.remove();
-        }
+  chatSessionSelect.addEventListener("change", (e) => {
+    loadSessionMessages(e.target.value);
+  });
 
-        chatBox.innerHTML = ''; // Clear existing chat box content
-
-        snapshot.docs.forEach(doc => {
-          const messageData = doc.data();
-          const className = messageData.type === 'user' ? 'user-message' : 'ai-message';
-          addMessage(messageData.message, className, true); // Pass true to avoid saving
-        });
-
-        historyLoaded = true; // Mark history as loaded
-      } catch (error) {
-        console.error("Error loading chat history:", error);
-      }
+  // Load chat history on login
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      loadChatSessions();
     }
   });
 
   // Setup chat history button
-  function setupChatHistoryButton() {
-    const chatHistoryBtn = document.getElementById('chat-history-btn');
-    if (chatHistoryBtn) {
-      chatHistoryBtn.addEventListener('click', () => {
-        const user = firebase.auth().currentUser;
-        if (user) {
-          displayChatHistory();
-        } else {
-          alert('Please log in to view chat history.');
-        }
-      });
-    }
+  const chatHistoryBtn = document.getElementById('chat-history-btn');
+  if (chatHistoryBtn) {
+    chatHistoryBtn.addEventListener('click', () => {
+      const user = firebase.auth().currentUser;
+      if (user) displayChatHistory();
+      else alert('Please log in to view chat history.');
+    });
   }
 
-  setupChatHistoryButton();
+  // Status listener
+  if (db) {
+    db.collection("system").doc("status").onSnapshot((doc) => {
+      if (doc.exists) {
+        const statusData = doc.data();
+        if (statusData && statusData.message) {
+          statusElement.textContent = statusData.message;
+          statusElement.style.color = statusData.type === "online" ? "#28a745" : statusData.type === "updating" ? "rgb(231, 158, 0)" : "#dc3545";
+        }
+      }
+    });
+  }
 
   chatSend.disabled = true;
   console.log("Chat functionality initialized successfully");
