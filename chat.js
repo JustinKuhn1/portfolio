@@ -15,33 +15,37 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Listen for status changes from Firestore
-  if (db) {
-    db.collection("system")
-      .doc("status")
-      .onSnapshot(
-        (doc) => {
-          if (doc.exists) {
-            const statusData = doc.data();
-            if (statusData && statusData.message) {
-              statusElement.textContent = statusData.message;
-              statusElement.style.color =
-                statusData.type === "online"
-                  ? "#28a745" // Green
-                  : statusData.type === "updating"
-                  ? "rgb(231, 158, 0)" // Orange (from your CSS)
-                  : "#dc3545"; // Red
-            }
-          } else {
-            console.log("No status document found");
-          }
-        },
-        (error) => {
-          console.error("Error getting status:", error);
-        }
-      );
-  } else {
-    console.error("Firebase database not initialized");
+  // Modal for chat history
+  function createChatHistoryModal() {
+    const modal = document.createElement('div');
+    modal.id = 'chat-history-modal';
+    modal.classList.add('chat-history-modal');
+    modal.innerHTML = `
+      <div class="chat-history-content">
+        <div class="chat-history-header">
+          <h2>Chat History</h2>
+          <button id="close-history-modal">&times;</button>
+        </div>
+        <div id="chat-history-list" class="chat-history-list">
+          <!-- History items will be populated here -->
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const closeBtn = modal.querySelector('#close-history-modal');
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+    return modal;
   }
 
   // Save message to user's chat history
@@ -51,46 +55,82 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("No user logged in. Cannot save chat history.");
       return false;
     }
-  
+
     try {
       const chatHistoryRef = db.collection("users").doc(user.uid).collection("chat_history");
       
-      // Check for duplicate messages within a short time frame
-      const duplicateQuery = await chatHistoryRef
-        .where('message', '==', messageText)
-        .where('type', '==', messageType)
-        .orderBy('timestamp', 'desc')
-        .limit(1)
-        .get();
-  
-      // If no duplicates found, add the message
-      if (duplicateQuery.empty) {
-        await chatHistoryRef.add({
-          message: messageText,
-          type: messageType,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          model: "KuhnNova o1"
-        });
-        return true;
-      }
-  
-      // Optional: Check timestamp of last similar message to prevent very recent duplicates
-      const lastSimilarMessage = duplicateQuery.docs[0];
-      const lastMessageTime = lastSimilarMessage.data().timestamp;
-      const currentTime = firebase.firestore.FieldValue.serverTimestamp();
-  
-      // If the last similar message was added very recently (e.g., within 5 seconds), skip adding
-      if (lastMessageTime && 
-          (currentTime._seconds - lastMessageTime._seconds < 5)) {
-        return false;
-      }
-  
+      await chatHistoryRef.add({
+        message: messageText,
+        type: messageType,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        model: "KuhnNova o1"
+      });
       return true;
     } catch (error) {
       console.error("Error saving message to chat history:", error);
       return false;
     }
   }
+
+  // Fetch and display chat history
+  async function displayChatHistory() {
+    console.log("Attempting to display chat history");
+
+    const user = firebase.auth().currentUser;
+    if (!user) {
+      console.error('No user logged in');
+      alert('Please log in to view chat history.');
+      return;
+    }
+
+    const modal = document.getElementById('chat-history-modal') || createChatHistoryModal();
+    const historyList = modal.querySelector('#chat-history-list');
+    historyList.innerHTML = ''; // Clear previous history
+
+    try {
+      console.log(`Fetching history for user: ${user.uid}`);
+      const chatHistoryRef = db.collection("users").doc(user.uid).collection("chat_history");
+      const snapshot = await chatHistoryRef
+        .orderBy("timestamp", "desc")
+        .limit(100)
+        .get();
+
+      console.log(`Found ${snapshot.docs.length} history items`);
+
+      if (snapshot.empty) {
+        historyList.innerHTML = '<p>No chat history found.</p>';
+        modal.style.display = 'block';
+        return;
+      }
+
+      snapshot.docs.forEach(doc => {
+        const messageData = doc.data();
+        const messageItem = document.createElement('div');
+        messageItem.classList.add('history-message');
+        messageItem.classList.add(messageData.type === 'user' ? 'user-history' : 'ai-history');
+        
+        // Format timestamp
+        const timestamp = messageData.timestamp 
+          ? new Date(messageData.timestamp.toDate()).toLocaleString() 
+          : 'Unknown time';
+
+        messageItem.innerHTML = `
+          <div class="history-message-content">
+            <span class="history-timestamp">${timestamp}</span>
+            <p>${messageData.message}</p>
+          </div>
+        `;
+
+        historyList.appendChild(messageItem);
+      });
+
+      modal.style.display = 'block';
+    } catch (error) {
+      console.error("Error fetching chat history:", error);
+      alert('Failed to load chat history. Check console for details.');
+    }
+  }
+
   // Add message to chat box
   function addMessage(text, className) {
     const messageDiv = document.createElement("div");
@@ -181,89 +221,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Modal for chat history
-  function createChatHistoryModal() {
-    const modal = document.createElement('div');
-    modal.id = 'chat-history-modal';
-    modal.classList.add('chat-history-modal');
-    modal.innerHTML = `
-      <div class="chat-history-content">
-        <div class="chat-history-header">
-          <h2>Chat History</h2>
-          <button id="close-history-modal">&times;</button>
-        </div>
-        <div id="chat-history-list" class="chat-history-list">
-          <!-- History items will be populated here -->
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    const closeBtn = modal.querySelector('#close-history-modal');
-    closeBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-
-    return modal;
-  }
-
-  // Fetch and display chat history
-  async function displayChatHistory() {
-    const user = firebase.auth().currentUser;
-    if (!user) {
-      alert('Please log in to view chat history.');
-      return;
-    }
-
-    const modal = document.getElementById('chat-history-modal') || createChatHistoryModal();
-    const historyList = modal.querySelector('#chat-history-list');
-    historyList.innerHTML = ''; // Clear previous history
-
-    try {
-      const chatHistoryRef = db.collection("users").doc(user.uid).collection("chat_history");
-      const snapshot = await chatHistoryRef
-        .orderBy("timestamp", "desc")
-        .limit(100)
-        .get();
-
-      if (snapshot.empty) {
-        historyList.innerHTML = '<p>No chat history found.</p>';
-        return;
-      }
-
-      snapshot.docs.forEach(doc => {
-        const messageData = doc.data();
-        const messageItem = document.createElement('div');
-        messageItem.classList.add('history-message');
-        messageItem.classList.add(messageData.type === 'user' ? 'user-history' : 'ai-history');
-        
-        // Format timestamp
-        const timestamp = messageData.timestamp 
-          ? new Date(messageData.timestamp.toDate()).toLocaleString() 
-          : 'Unknown time';
-
-        messageItem.innerHTML = `
-          <div class="history-message-content">
-            <span class="history-timestamp">${timestamp}</span>
-            <p>${messageData.message}</p>
-          </div>
-        `;
-
-        historyList.appendChild(messageItem);
-      });
-
-      modal.style.display = 'block';
-    } catch (error) {
-      console.error("Error fetching chat history:", error);
-      alert('Failed to load chat history.');
-    }
+  // Listen for status changes from Firestore
+  if (db) {
+    db.collection("system")
+      .doc("status")
+      .onSnapshot(
+        (doc) => {
+          if (doc.exists) {
+            const statusData = doc.data();
+            if (statusData && statusData.message) {
+              statusElement.textContent = statusData.message;
+              statusElement.style.color =
+                statusData.type === "online"
+                  ? "#28a745" // Green
+                  : statusData.type === "updating"
+                  ? "rgb(231, 158, 0)" // Orange (from your CSS)
+                  : "#dc3545"; // Red
+            }
+          } else {
+            console.log("No status document found");
+          }
+        },
+        (error) => {
+          console.error("Error getting status:", error);
+        }
+      );
+  } else {
+    console.error("Firebase database not initialized");
   }
 
   // Event Listeners
@@ -326,11 +310,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Add event listener for chat history button
-  const chatHistoryBtn = document.getElementById('chat-history-btn');
-  if (chatHistoryBtn) {
-    chatHistoryBtn.addEventListener('click', displayChatHistory);
+  // Setup chat history button
+  function setupChatHistoryButton() {
+    const chatHistoryBtn = document.getElementById('chat-history-btn');
+    if (chatHistoryBtn) {
+      chatHistoryBtn.addEventListener('click', () => {
+        console.log("Chat history button clicked");
+        const user = firebase.auth().currentUser;
+        if (user) {
+          displayChatHistory();
+        } else {
+          alert('Please log in to view chat history.');
+        }
+      });
+    } else {
+      console.error("Chat history button not found");
+    }
   }
+
+  // Call setup function
+  setupChatHistoryButton();
 
   // Initial setup
   chatSend.disabled = true;
