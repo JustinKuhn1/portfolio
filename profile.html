@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Profile - KuhnAI</title>
+  <meta name="description" content="User profile for KuhnAI">
+  
+  <!-- Styles & Icons -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
+  <link rel="icon" type="image/png" href="images/weblogo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Additional Profile Styles -->
+  <style>
+    .profile-container {
+      max-width: 900px;
+      margin: 100px auto;
+      padding: 20px;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary-color);
+    }
+
+    .profile-info h1 {
+      font-size: 2rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .verified-badge {
+      color: #28a745;
+      font-size: 1.2rem;
+    }
+
+    .profile-details {
+      margin: 20px 0;
+    }
+
+    .profile-details p {
+      font-size: 1rem;
+      margin: 10px 0;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .chat-history-section {
+      margin-top: 40px;
+    }
+
+    .chat-history-list {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      padding: 10px;
+    }
+
+    .chat-message {
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+
+    .chat-message.user {
+      background: #e3f2fd;
+      text-align: right;
+    }
+
+    .chat-message.ai {
+      background: #f1f8e9;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .stat-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .stat-card p {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    .edit-profile-btn {
+      background: #007bff;
+    }
+
+    .edit-profile-btn:hover {
+      background: #0056b3;
+    }
+
+    @media (max-width: 768px) {
+      .profile-container {
+        margin: 80px 10px;
+        padding: 15px;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header (Same as index.html) -->
+  <header class="header" id="header">
+    <nav class="nav container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/weblogo-removebg-preview.png" alt="KuhnAI" style="height: 50px; vertical-align: middle;">
+        </a>
+      </div>
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li class="nav__item"><a href="index.html#about" class="nav__link"><i class="ri-arrow-right-up-line"></i><span>About Us</span></a></li>
+          <li class="nav__item"><a href="index.html#ai-demos" class="nav__link"><i class="ri-arrow-right-up-line"></i><span>Demos</span></a></li>
+          <li class="nav__item"><a href="blog.html" class="nav__link"><i class="ri-arrow-right-up-line"></i><span>Blog</span></a></li>
+          <li class="nav__item"><a href="index.html#contact" class="nav__link"><i class="ri-arrow-right-up-line"></i><span>Contact</span></a></li>
+          <li class="nav__item"><a href="#" class="nav__link" id="account-btn"><i class="ri-arrow-right-up-line"></i><span>My Profile</span></a></li>
+        </ul>
+        <div class="nav__close" id="nav-close"><i class="ri-close-large-line"></i></div>
+        <div class="nav__social">
+          <a href="https://www.instagram.com/justinkuhnn" target="_blank" class="nav__social-link"><i class="ri-instagram-line"></i></a>
+          <a href="https://x.com/justinkuhnn" target="_blank" class="nav__social-link"><i class="ri-twitter-line"></i></a>
+          <a href="https://github.com/JustinKuhn1" target="_blank" class="nav__social-link"><i class="ri-github-line"></i></a>
+          <a href="https://www.linkedin.com/in/justin-kuhn-98246a328/" target="_blank" class="nav__social-link"><i class="ri-linkedin-box-line"></i></a>
+        </div>
+      </div>
+      <div class="nav__toggle" id="nav-toggle"><i class="ri-menu-line"></i></div>
+    </nav>
+  </header>
+
+  <!-- Profile Content -->
+  <div class="profile-container">
+    <div class="profile-header">
+      <img src="images/default-avatar.png" alt="User Avatar" class="profile-avatar" id="profile-avatar">
+      <div class="profile-info">
+        <h1 id="profile-username">Username <i class="fas fa-check-circle verified-badge" id="verified-badge" style="display: none;"></i></h1>
+        <p id="profile-email">email@example.com</p>
+      </div>
+    </div>
+
+    <div class="profile-details">
+      <p><strong>Joined:</strong> <span id="profile-joined">Loading...</span></p>
+      <p><strong>Last Login:</strong> <span id="profile-last-login">Loading...</span></p>
+      <p><strong>Bio:</strong> <span id="profile-bio">Tell us about yourself!</span></p>
+      <div class="profile-actions">
+        <button class="btn edit-profile-btn">Edit Profile</button>
+        <button class="btn" id="logout-btn">Logout</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Messages</h3>
+        <p id="stat-messages">0</p>
+      </div>
+      <div class="stat-card">
+        <h3>Active Days</h3>
+        <p id="stat-days">0</p>
+      </div>
+      <div class="stat-card">
+        <h3>AI Interactions</h3>
+        <p id="stat-interactions">0</p>
+      </div>
+    </div>
+
+    <div class="chat-history-section">
+      <h2>Chat History</h2>
+      <div class="chat-history-list" id="chat-history-list">
+        <!-- Chat history will be populated here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer (Same as index.html) -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>KuhnAI</h3>
+        <p>Discover cutting-edge AI applications & research.</p>
+        <a href="index.html#contact" class="footer-btn">Get in Touch</a>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#ai-demos">Demos</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Follow Me</h3>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/justinkuhnn" target="_blank"><i class="ri-instagram-line"></i></a>
+          <a href="https://x.com/justinkuhnn" target="_blank"><i class="ri-twitter-line"></i></a>
+          <a href="https://github.com/JustinKuhn1" target="_blank"><i class="ri-github-line"></i></a>
+          <a href="https://www.linkedin.com/in/justin-kuhn-98246a328/" target="_blank"><i class="ri-linkedin-box-line"></i></a>
+        </div>
+        <p>&copy; 2025 KuhnAI. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase Config and Auth -->
+  <script src="firebase-config.js"></script>
+  <script src="auth.js"></script>
+
+  <!-- Profile JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const logoutBtn = document.getElementById('logout-btn');
+      const chatHistoryList = document.getElementById('chat-history-list');
+
+      // Redirect to login if not authenticated
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          window.location.href = 'index.html';
+          return;
+        }
+
+        // Populate profile info
+        document.getElementById('profile-username').textContent = user.displayName || user.email.split('@')[0];
+        document.getElementById('profile-email').textContent = user.email;
+        document.getElementById('profile-avatar').src = user.photoURL || 'images/default-avatar.png';
+
+        // Fetch user data from Firestore
+        const userRef = firebase.firestore().collection('users').doc(user.uid);
+        userRef.get().then((doc) => {
+          if (doc.exists) {
+            const data = doc.data();
+            document.getElementById('profile-joined').textContent = data.createdAt?.toDate().toLocaleDateString() || 'Unknown';
+            document.getElementById('profile-last-login').textContent = data.lastLogin?.toDate().toLocaleString() || 'Unknown';
+            document.getElementById('profile-bio').textContent = data.bio || 'Tell us about yourself!';
+            if (data.isVerified) {
+              document.getElementById('verified-badge').style.display = 'inline';
+            }
+          }
+        });
+
+        // Update last login
+        userRef.update({
+          lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Load chat history
+        firebase.firestore().collection('users').doc(user.uid).collection('chat_history')
+          .orderBy('timestamp', 'desc')
+          .limit(50)
+          .get()
+          .then((snapshot) => {
+            chatHistoryList.innerHTML = '';
+            snapshot.forEach((doc) => {
+              const msg = doc.data();
+              const msgDiv = document.createElement('div');
+              msgDiv.className = `chat-message ${msg.type}`;
+              msgDiv.innerHTML = `
+                <p>${msg.message}</p>
+                <small>${msg.timestamp?.toDate().toLocaleString() || 'Unknown time'}</small>
+              `;
+              chatHistoryList.appendChild(msgDiv);
+            });
+          });
+
+        // Load stats
+        firebase.firestore().collection('users').doc(user.uid).collection('chat_history')
+          .get()
+          .then((snapshot) => {
+            const totalMessages = snapshot.size;
+            document.getElementById('stat-messages').textContent = totalMessages;
+
+            const uniqueDays = new Set();
+            snapshot.forEach(doc => {
+              const date = doc.data().timestamp?.toDate().toDateString();
+              if (date) uniqueDays.add(date);
+            });
+            document.getElementById('stat-days').textContent = uniqueDays.size;
+
+            const aiInteractions = snapshot.docs.filter(doc => doc.data().type === 'ai').length;
+            document.getElementById('stat-interactions').textContent = aiInteractions;
+          });
+      });
+
+      // Logout functionality
+      logoutBtn.addEventListener('click', () => {
+        firebase.auth().signOut().then(() => {
+          window.location.href = 'index.html';
+        });
+      });
+
+      // Edit profile (placeholder for future modal)
+      document.querySelector('.edit-profile-btn').addEventListener('click', () => {
+        alert('Edit profile feature coming soon!');
+      });
+    });
+  </script>
+</body>
+</html>
