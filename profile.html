@@ -8,11 +8,9 @@
   
   <!-- Styles & Icons -->
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
   <link rel="icon" type="image/png" href="images/weblogo.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/6702526ae5.js" crossorigin="anonymous"></script>
   <meta name="theme-color" content="#000000">
 
   <!-- Additional Profile Styles -->
@@ -298,14 +296,14 @@
 
   <!-- Profile Content -->
   <div class="profile-container">
-    <button class="dark-mode-toggle" id="dark-mode-toggle"><i class="fas fa-moon"></i></button>
+    <button class="dark-mode-toggle" id="dark-mode-toggle"><i class="ri-moon-line"></i></button>
     <div class="profile-header">
-        <img src="images/default-avatar.png" alt="User Avatar" class="profile-avatar" id="profile-avatar">
-        <div class="profile-info">
-          <h1 id="profile-username">Username <i class="fas fa-check-circle verified-badge" id="verified-badge" style="display: none;"></i></h1>
-          <p id="profile-email">email@example.com</p>
-        </div>
+      <img src="images/default-avatar.png" alt="User Avatar" class="profile-avatar" id="profile-avatar">
+      <div class="profile-info">
+        <h1 id="profile-username">Username <span class="verified-badge" id="verified-badge" style="display: none;">✓</span></h1>
+        <p id="profile-email">email@example.com</p>
       </div>
+    </div>
 
     <div class="profile-details">
       <p><strong>Joined:</strong> <span id="profile-joined">Loading...</span></p>
@@ -406,6 +404,8 @@
   <!-- Profile JavaScript -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM fully loaded, checking for verified-badge...');
+
       const logoutBtn = document.getElementById('logout-btn');
       const chatHistoryList = document.getElementById('chat-history-list');
       const editProfileBtn = document.querySelector('.edit-profile-btn');
@@ -420,8 +420,6 @@
       const chatSessionSelect = document.getElementById('chat-session-select');
       let chatHistory = [];
       let currentSessionId = null;
-
-      console.log('DOM fully loaded, checking for verified-badge...'); // Debug log
 
       // Redirect to login if not authenticated
       firebase.auth().onAuthStateChanged((user) => {
@@ -449,24 +447,27 @@
             document.getElementById('edit-name').value = data.name || '';
             document.getElementById('edit-bio').value = data.bio || '';
 
-            // Check and display verification status with enhanced debugging
-            const verifiedBadge = document.getElementById('verified-badge');
-            console.log('Verified badge element:', verifiedBadge); // Log to check if element exists
-            if (verifiedBadge) {
-              const isVerified = data.isVerified === true; // Explicitly check for true
-              verifiedBadge.style.display = isVerified ? 'inline-block' : 'none';
-              console.log('Verification status:', isVerified); // Log verification status
-            } else {
-              console.error('Verified badge element not found in the DOM. Check HTML for id="verified-badge".');
-              // Attempt to find the element again with a fallback
-              const fallbackBadge = document.querySelector('.verified-badge');
-              if (fallbackBadge) {
-                console.warn('Found badge via class, but ID is missing. Using fallback.');
-                fallbackBadge.style.display = data.isVerified === true ? 'inline-block' : 'none';
+            // Check and display verification status with enhanced debugging and delay
+            setTimeout(() => {
+              const verifiedBadge = document.getElementById('verified-badge');
+              console.log('Verified badge element (after delay):', verifiedBadge); // Log to check if element exists after delay
+              if (verifiedBadge) {
+                const isVerified = data.isVerified === true; // Explicitly check for true
+                verifiedBadge.style.display = isVerified ? 'inline-block' : 'none';
+                console.log('Verification status:', isVerified); // Log verification status
               } else {
-                console.error('No verified badge found by class or ID.');
+                console.error('Verified badge element not found in the DOM. Check HTML for id="verified-badge".');
+                // Attempt to find the element again with a fallback
+                const fallbackBadge = document.querySelector('.verified-badge');
+                if (fallbackBadge) {
+                  console.warn('Found badge via class, but ID is missing. Using fallback.');
+                  fallbackBadge.style.display = data.isVerified === true ? 'inline-block' : 'none';
+                } else {
+                  console.error('No verified badge found by class or ID.');
+                }
               }
-            }
+            }, 100); // Small delay to ensure DOM is fully rendered
+
           } else {
             console.error('User document does not exist in Firestore.');
           }
@@ -701,15 +702,15 @@
       darkModeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         darkModeToggle.innerHTML = document.body.classList.contains('dark-mode') 
-          ? '<i class="fas fa-sun"></i>' 
-          : '<i class="fas fa-moon"></i>';
+          ? '<i class="ri-sun-line"></i>' 
+          : '<i class="ri-moon-line"></i>';
         localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
       });
 
       // Load dark mode preference
       if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
-        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        darkModeToggle.innerHTML = '<i class="ri-sun-line"></i>';
       }
     });
   </script>
