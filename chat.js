@@ -51,22 +51,46 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("No user logged in. Cannot save chat history.");
       return false;
     }
-
+  
     try {
       const chatHistoryRef = db.collection("users").doc(user.uid).collection("chat_history");
-      await chatHistoryRef.add({
-        message: messageText,
-        type: messageType,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        model: "KuhnNova o1"
-      });
+      
+      // Check for duplicate messages within a short time frame
+      const duplicateQuery = await chatHistoryRef
+        .where('message', '==', messageText)
+        .where('type', '==', messageType)
+        .orderBy('timestamp', 'desc')
+        .limit(1)
+        .get();
+  
+      // If no duplicates found, add the message
+      if (duplicateQuery.empty) {
+        await chatHistoryRef.add({
+          message: messageText,
+          type: messageType,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          model: "KuhnNova o1"
+        });
+        return true;
+      }
+  
+      // Optional: Check timestamp of last similar message to prevent very recent duplicates
+      const lastSimilarMessage = duplicateQuery.docs[0];
+      const lastMessageTime = lastSimilarMessage.data().timestamp;
+      const currentTime = firebase.firestore.FieldValue.serverTimestamp();
+  
+      // If the last similar message was added very recently (e.g., within 5 seconds), skip adding
+      if (lastMessageTime && 
+          (currentTime._seconds - lastMessageTime._seconds < 5)) {
+        return false;
+      }
+  
       return true;
     } catch (error) {
       console.error("Error saving message to chat history:", error);
       return false;
     }
   }
-
   // Add message to chat box
   function addMessage(text, className) {
     const messageDiv = document.createElement("div");
