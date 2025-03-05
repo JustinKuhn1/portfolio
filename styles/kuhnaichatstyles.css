@@ -365,26 +365,26 @@
   }
   /* Add these styles to your existing CSS */
 
-/* History Button */
+/* Revised History Button */
 #chat-history-btn {
   border: none;
-  padding: 8px 12px;
-  color: #0d0d0e; /* Matches other button colors */
-  font-size: 1rem;
+  padding: 8px 14px; /* Matches DeepSearch/Think padding */
+  color: #0d0d0e; /* Consistent button color */
+  font-size: 1rem; /* Matches theme */
+  font-weight: 500; /* Matches DeepSearch/Think */
   cursor: pointer;
-  transition: var(--transition); /* Consistent transition */
+  transition: var(--transition); /* Smooth transition */
   display: flex;
   align-items: center;
   justify-content: center;
   background: transparent;
-  border-radius: 50%; /* Matches attach/send buttons */
-  width: 40px; /* Fixed size like attach/send */
-  height: 40px;
+  border-radius: 6px; /* Matches DeepSearch/Think rounded rectangle */
+  gap: 6px; /* Space between icon and text, like DeepSearch/Think */
 }
 
 #chat-history-btn:hover {
   background: rgba(144, 173, 204, 0.1); /* Matches hover effect */
-  color: #619dda; /* Darker shade for hover, consistent with send button */
+  color: #404041; /* Matches hover color of DeepSearch/Think */
 }
 
 #chat-history-btn:active {
@@ -393,9 +393,8 @@
 
 #chat-history-btn.active {
   color: #fff;
-  background: #74a7df; /* Matches active state of other buttons */
+  background: #74a7df; /* Matches active state */
 }
-
 /* Session Selector */
 .chat-session-select {
   padding: 8px 12px; /* Adjusted padding for consistency */
