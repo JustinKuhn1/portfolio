@@ -80,13 +80,26 @@
         <span class="status">Updating...</span>
       </div>
       <div class="chat-session-controls">
-        <div class="history-label">
+        <button class="session-toggle-btn" id="session-toggle-btn">
           <i class="fas fa-history"></i>
-          <select class="chat-session-select" id="chat-session-select">
-          <option value="">History</option>
-        </select>
-        </div>
+          <span>Chat History</span>
+          <i class="fas fa-chevron-right"></i>
+        </button>
         <button class="btn" id="new-chat-session">New Chat</button>
+      </div>
+      
+      <div class="session-sidebar" id="session-sidebar">
+        <div class="session-list" id="session-list">
+          <div class="session-group">
+            <h4>Today</h4>
+            <!-- Session items will be populated dynamically -->
+          </div>
+          <div class="session-group">
+            <h4>Yesterday</h4>
+            <!-- Session items will be populated dynamically -->
+          </div>
+          <button class="new-temp-chat-btn" id="new-temp-chat-btn">Create New Temporary Chat</button>
+        </div>
       </div>
       <div id="chat-box" class="chat-box">
         <div class="message welcome-message">

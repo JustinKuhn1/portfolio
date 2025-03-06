@@ -409,7 +409,7 @@
 	  white-space: normal; /* Allow text to wrap */
 	  border-right: none; /* Remove cursor */
 	  overflow: visible; /* No need to hide overflow with fade */
-	  animation: fadeIn 1.2s ease-in-out forwards 1.5s; /* Regular fade-in */
+	  animation: fadeIn 1.2s ease-in-out forwards ; /* Regular fade-in */
 	}
   }
 
