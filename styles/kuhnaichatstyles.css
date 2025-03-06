@@ -398,18 +398,20 @@
 /* Session Selector */
 .chat-session-select {
   padding: 8px 12px; /* Adjusted padding for consistency */
-  border: 1px solid #e0e0e0; /* Matches chat input border */
   border-radius: 20px; /* Matches chat input's rounded style */
   font-family: var(--font-family); /* Consistent typography */
   font-size: var(--normal-font-size); /* Matches theme font size */
   color: var(--text-color); /* Matches text color */
-  background: #fff; /* White background for consistency */
+  background: #ffffff00; /* White background for consistency */
   cursor: pointer;
   transition: var(--transition); /* Smooth transitions */
   max-width: 200px; /* Retain max-width */
   outline: none; /* Remove default outline */
 }
-
+.chat-session-controls .btn {
+  padding: 8px;
+  font-size: 15px;
+}
 .chat-session-select:hover {
   border-color: #619dda; /* Subtle hover effect matching theme */
   background: rgba(144, 173, 204, 0.1); /* Light background like buttons */
@@ -424,4 +426,17 @@
 .chat-session-select option {
   color: var(--text-color);
   background: #fff;
+}
+
+.history-label {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* Space between icon and text */
+  font-size: var(--normal-font-size); /* Matches your theme */
+  color: var(--text-color); /* Matches your theme */
+  margin-right: 10px; /* Space between label and selector */
+}
+
+.history-label i {
+  font-size: 1.0rem; /* Slightly larger icon for visibility */
 }

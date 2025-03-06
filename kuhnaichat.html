@@ -80,9 +80,13 @@
         <span class="status">Updating...</span>
       </div>
       <div class="chat-session-controls">
-        <select class="chat-session-select" id="chat-session-select">
-          <option value="">Select a session</option>
+        <div class="history-label">
+          <i class="fas fa-history"></i>
+          <select class="chat-session-select" id="chat-session-select">
+          <option value="">History</option>
         </select>
+        </div>
+        
         <button class="btn" id="new-chat-session">New Chat</button>
       </div>
       <div id="chat-box" class="chat-box">
@@ -104,9 +108,6 @@
           </button>
           <button id="attach-btn" aria-label="Attach" title="Attach a file">
             <i class="fas fa-paperclip"></i>
-          </button>
-          <button id="chat-history-btn" aria-label="Chat History" title="View Chat History">
-            <i class="fas fa-history"></i> History
           </button>
           <button id="chat-send" aria-label="Send Message" title="Send">
             <i class="fas fa-paper-plane"></i>
