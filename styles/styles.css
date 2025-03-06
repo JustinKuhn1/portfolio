@@ -364,60 +364,52 @@
 	z-index: -1; /* Behind content */
   }
   
-  /* Typing Animation Keyframes */
-@keyframes typing {
-	from {
-	  width: 0;
-	}
-	to {
-	  width: 100%;
-	}
+  .hero-content p {
+	font-size: clamp(1rem, 2.5vw, 1.2rem); /* Responsive font size with min/max */
+	margin-bottom: 30px;
+	overflow: hidden; /* Ensures text doesn't show before animation */
+	white-space: nowrap; /* Keeps text on one line for typing effect */
+	border-right: 3px solid white; /* Cursor effect */
+	animation: 
+	  typing 1.2s steps(40, end) forwards 2.5s, /* Adjusted steps for character count */
+	  blink-caret 0.75s step-end infinite 2.5s; /* Blinking cursor with delay */
+	animation-fill-mode: both; /* Ensures opacity changes persist */
+	animation-delay: 0s; /* Delay matches typing start */
   }
   
-  @keyframes blink-caret {
-	from, to {
-	  border-color: transparent;
-	}
-	50% {
-	  border-color: white; /* Matches hero text color */
-	}
-  }
-
-/* Fade Animation Keyframes */
-@keyframes fadeIn {
-	from {
-	  opacity: 0;
-	}
-	to {
-	  opacity: 1;
-	}
-  }
-
+  /* Fade Animation for h1 (unchanged) */
   .hero-content h1 {
 	font-size: 3rem;
 	margin-bottom: 20px;
 	opacity: 0; /* Start hidden */
-  	animation-fill-mode: forwards; /* Ensures text stays visible after animation */
-  	animation: fadeIn 1.5s ease-in-out forwards; /* Fades in over 1.5 seconds */
-		
-  }
-  .hero-content p {
-	font-size: 1.2rem;
-	margin-bottom: 30px;
-	overflow: hidden; /* Ensures text doesn't show before animation */
-  	white-space: nowrap; /* Keeps text on one line */
-  	border-right: 3px solid white; /* Cursor effect */
-  	animation: 
-    typing 1.2s steps(60, end) forwards 2.5s, /* Starts after h1 finishes */
-    blink-caret 0.75s step-end infinite 2.5s; /* Blinking cursor with delay */
-  	animation-fill-mode: both; /* Ensures opacity changes persist */
-  	animation-delay: 0s; /* Delay matches typing start */
+	animation-fill-mode: forwards; /* Ensures text stays visible after animation */
+	animation: fadeIn 1.5s ease-in-out forwards; /* Fades in over 1.5 seconds */
   }
   
-  /* Responsive Adjustments with Media Queries */
+  /* Keyframes (unchanged) */
+  @keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+  }
+  
+  @keyframes typing {
+	from { width: 0; }
+	to { width: 100%; }
+  }
+  
+  @keyframes blink-caret {
+	from, to { border-color: transparent; }
+	50% { border-color: white; }
+  }
+  
+  /* Mobile Adjustments (≤880px) */
 @media screen and (max-width: 880px) {
 	.hero-content p {
-	  font-size: clamp(1rem, 2vw, 1rem); /* Smaller font on mobile */
+	  font-size: 18px;
+	  white-space: normal; /* Allow text to wrap */
+	  border-right: none; /* Remove cursor */
+	  overflow: visible; /* No need to hide overflow with fade */
+	  animation: fadeIn 1.2s ease-in-out forwards 1.5s; /* Regular fade-in */
 	}
   }
 
