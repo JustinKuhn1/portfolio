@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
               email: email,
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),
               lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-              bio: '',
+              bio: 'Member',
               isVerified: false,
               photo: '' // Default empty photo URL
             });
