@@ -405,7 +405,7 @@
 	font-size: 1.2rem;
 	margin-bottom: 30px;
 	overflow: hidden; /* Ensures text doesn't show before animation */
-  white-space: nowrap; /* Keeps text on one line */
+  
   border-right: 3px solid white; /* Cursor effect */
   animation: 
     typing 1.2s steps(60, end) forwards 2.5s, /* Starts after h1 finishes */
