@@ -412,6 +412,9 @@
   padding: 8px;
   font-size: 15px;
 }
+.chat-history-search {
+  margin-bottom: 2px;
+}
 .chat-session-select:hover {
   border-color: #619dda; /* Subtle hover effect matching theme */
   background: rgba(144, 173, 204, 0.1); /* Light background like buttons */
