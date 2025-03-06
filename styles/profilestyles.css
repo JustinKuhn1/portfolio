@@ -33,9 +33,10 @@
   }
 
   .verified-badge {
-    color: #28a745;
-    font-size: 1.2rem;
-    padding: 10px;
+    color: #3f97e3;
+    font-size: 1.5rem;
+    padding-left: 8px;
+    padding-top: 5px;
   }
 
   .profile-username-block {
