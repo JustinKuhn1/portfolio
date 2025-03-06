@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Edit profile modal
+    /* Edit profile modal
     editProfileBtn.addEventListener('click', () => {
       editProfileModal.style.display = 'block';
     });
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         editProfileModal.style.display = 'none';
       }
     });
-
+  */
     editProfileForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('edit-name').value;
