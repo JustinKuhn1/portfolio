@@ -419,7 +419,7 @@
   border-color: #619dda; /* Subtle hover effect matching theme */
   background: rgba(144, 173, 204, 0.1); /* Light background like buttons */
 }
-
+.profile-username-block {display: inline-block;}
 .chat-session-select:focus {
   border-color: #74a7df; /* Matches active button color */
   box-shadow: 0 0 5px rgba(116, 167, 223, 0.5); /* Subtle focus glow */
