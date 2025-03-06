@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         editProfileModal.style.display = 'none';
       }
     });
-  */
+  
     editProfileForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('edit-name').value;
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Failed to update profile: ' + error.message);
       });
     });
-
+*/
     // Delete account
     deleteAccountBtn.addEventListener('click', () => {
       if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
