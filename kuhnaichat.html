@@ -147,6 +147,80 @@
     </div>
   </footer>
 
+  
+<!-- Auth Modal -->
+<div id="auth-modal" class="auth-modal">
+  <div class="auth-modal-content">
+    <span class="auth-close">&times;</span>
+    
+    <!-- Tab buttons -->
+    <div class="auth-tabs">
+      <button class="auth-tab-btn active" data-tab="login">Login</button>
+      <button class="auth-tab-btn" data-tab="signup">Sign Up</button>
+    </div>
+    
+    <!-- Login Form -->
+    <div id="login-tab" class="auth-tab-content active">
+      <form id="login-form">
+        <h3>Welcome Back</h3>
+        <div class="auth-input-group">
+          <input type="email" id="login-email" placeholder="Email" required>
+        </div>
+        <div class="auth-input-group">
+          <input type="password" id="login-password" placeholder="Password" required>
+        </div>
+        <div class="auth-forgot">
+          <a href="#" id="forgot-password">Forgot Password?</a>
+        </div>
+        <button type="submit" class="auth-btn">Login</button>
+        <div class="auth-divider">
+          <span>OR</span>
+        </div>
+        <button type="button" class="auth-google-btn">
+          <i class="ri-google-fill"></i> Continue with Google
+        </button>
+      </form>
+    </div>
+    
+    <!-- Signup Form -->
+    <div id="signup-tab" class="auth-tab-content">
+      <form id="signup-form">
+        <h3>Create Account</h3>
+        <div class="auth-input-group">
+          <input type="text" id="signup-name" placeholder="Full Name" required>
+        </div>
+        <div class="auth-input-group">
+          <input type="email" id="signup-email" placeholder="Email" required>
+        </div>
+        <div class="auth-input-group">
+          <input type="password" id="signup-password" placeholder="Password" required>
+          <small>Password must be at least 6 characters</small>
+        </div>
+        <button type="submit" class="auth-btn">Sign Up</button>
+        <div class="auth-divider">
+          <span>OR</span>
+        </div>
+        <button type="button" class="auth-google-btn">
+          <i class="ri-google-fill"></i> Continue with Google
+        </button>
+      </form>
+    </div>
+    
+    <!-- Reset Password Form (Hidden by default) -->
+    <div id="reset-tab" class="auth-tab-content">
+      <form id="reset-form">
+        <h3>Reset Password</h3>
+        <p>Enter your email address and we'll send you a link to reset your password.</p>
+        <div class="auth-input-group">
+          <input type="email" id="reset-email" placeholder="Email" required>
+        </div>
+        <button type="submit" class="auth-btn">Send Reset Link</button>
+        <button type="button" class="auth-back-btn">Back to Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
