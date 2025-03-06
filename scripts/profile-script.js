@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded, checking for verified-badge...');
 
     const logoutBtn = document.getElementById('logout-btn');
-    const chatHistoryList = document.getElementById('chat-history-list');
+    /*const chatHistoryList = document.getElementById('chat-history-list');
     const editProfileBtn = document.querySelector('.edit-profile-btn');
     const editProfileModal = document.getElementById('edit-profile-modal');
     const editProfileClose = document.getElementById('edit-profile-close');
-    const editProfileForm = document.getElementById('edit-profile-form');
+    const editProfileForm = document.getElementById('edit-profile-form');*/
     const deleteAccountBtn = document.querySelector('.delete-account-btn');
     const chatSearch = document.getElementById('chat-search');
     const downloadChatBtn = document.getElementById('download-chat-btn');
@@ -38,9 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
           document.getElementById('profile-joined').textContent = data.createdAt?.toDate().toLocaleDateString() || 'Unknown';
           document.getElementById('profile-last-login').textContent = data.lastLogin?.toDate().toLocaleString() || 'Unknown';
-          document.getElementById('profile-bio').textContent = data.bio || 'Tell us about yourself!';
-          document.getElementById('edit-name').value = data.name || '';
-          document.getElementById('edit-bio').value = data.bio || '';
+          document.getElementById('profile-bio').textContent = data.bio || '';
+          /*document.getElementById('edit-name').value = data.name || '';
+          document.getElementById('edit-bio').value = data.bio || ''*/
 
           // Check and display verification status with enhanced debugging and delay
           setTimeout(() => {
@@ -292,19 +292,4 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'index.html';
       });
     });
-
-    // Dark mode toggle
-    darkModeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      darkModeToggle.innerHTML = document.body.classList.contains('dark-mode') 
-        ? '<i class="ri-sun-line"></i>' 
-        : '<i class="ri-moon-line"></i>';
-      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-    });
-
-    // Load dark mode preference
-    if (localStorage.getItem('darkMode') === 'true') {
-      document.body.classList.add('dark-mode');
-      darkModeToggle.innerHTML = '<i class="ri-sun-line"></i>';
-    }
   });
